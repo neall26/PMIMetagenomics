@@ -9,17 +9,17 @@ function validateEmail(email){
 
 
 var studyMetadataSchema = new Schema({
-	studyName: {type: String, default: null},
-	studyId: {type String, default: null},
+	studyName: {type: String, default: null, required: true},
+	studyId: {type String, default: null, required: true},
 	ncbiId: {type: Number, default: null},
 	ncbiAccension: {type: String, default: null},
 	ncbiName: {type: String, default: null},
 	sequencingCenter: {type: String, default: null},
 	funding: {type: String, default: null},
-	contact: {type: String, default: null},
+	contact: {type: String, default: null, required: true},
 	email: {type: String, default: null validate: [validateEmail, 'email not valid'},
 	published: {type: String, default: null},
-	availability: {type: String, default: null},
+	availability: {type: String, default: null, required: true},
 	submissionDate: {type: Date, default: Date.now}
 });
 

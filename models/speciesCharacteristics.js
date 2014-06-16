@@ -3,9 +3,9 @@ var mongoose = require('mongoose')
    ,ObjectId = Schema.ObjectId;
 
 var speciesCharacteristicsSchema = new Schema({
-	sampleId: {type: ObjectId, default: null}
-	speciesId: {type: String, default: null},
-	lineage: {type: String, default: null},
+	sampleId: {type: ObjectId, default: null, required: true}
+	speciesId: {type: String, default: null, required: true},
+	lineage: {type: String, default: null, required: true},
 	kingdon: {type: String, default: null},
 	phylum: {type: String, default: null},
 	class: {type: String, default: null},

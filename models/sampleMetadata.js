@@ -10,13 +10,14 @@ function latValidator (lat){
 
 
 var sampleMetadataSchema = new Schema({
-	studyId: {type: ObjectId, default: null},
-	sampleId: {type: String, default: null},
-	sampleName: {type: String, default: null},
-	submissionDate: {type: Date, default:Date.now},  
-	domain: {type: String, default: null},
-	latitude: {type: Number, default: null, validate: [latValidator, 'invalid latitude']}, 
-	longitude: {type: Number, default: null, validate: [latValidator, 'invalid longitude']},
+	studyId: {type: ObjectId, default: null, required: true},
+	sampleId: {type: String, default: null, required: true},
+	sampleName: {type: String, default: null, required: true},
+	submissionDate: {type: Date, default:Date.now, required: true},  
+	domain: {type: String, default: null, required: true},
+	sideId: {type: String, default: null},
+	latitude: {type: Number, default: null, validate: [latValidator, 'invalid latitude'], required: true}, 
+	longitude: {type: Number, default: null, validate: [latValidator, 'invalid longitude'], required: true},
 	hostName: {type: String, default: null},
 	hostTissue: {type: String, default: null},
 	taxonId: {type: Number, default: null},
