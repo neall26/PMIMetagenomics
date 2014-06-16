@@ -1,0 +1,29 @@
+@CHARSET "ISO-8859-1";
+
+.main {
+width:250px;
+border:1px solid #000000;
+}
+
+.month {
+background-color:#000000;;
+font:bold 12px verdana;
+color:white;
+}
+
+.daysofweek {
+background-color:gray;
+font:bold 12px verdana;
+color:white;
+}
+
+.days {
+font-size: 12px;
+font-family:verdana;
+color:#000000;
+}
+
+.days #today{
+font-weight: bold;
+color: red;
+}

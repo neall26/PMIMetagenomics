@@ -1,0 +1,11 @@
+--2013-06-03 15:58:25--  http://www.cypress.com/ui/4_0/images/icon_xls.gif
+Resolving www.cypress.com (www.cypress.com)... 204.2.196.88, 204.2.196.129
+Connecting to www.cypress.com (www.cypress.com)|204.2.196.88|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1042 (1.0K) [image/gif]
+Saving to: ‘icon_xls.gif’
+
+     0K .                                                     100% 71.5M=0s
+
+2013-06-03 15:58:25 (71.5 MB/s) - ‘icon_xls.gif’ saved [1042/1042]
+

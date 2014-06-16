@@ -1,0 +1,21 @@
+{
+  "name": "geobiodata",
+  "version": "0.0.1",
+  "description": "A project to organize and visualize biological geospacial data.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+	"dependencies": {
+		"express": "3.2.0",
+		"mongoose": "^3.8.9",
+		"lodash": "*"
+	},
+  "keywords": [
+    "bioinformatics",
+    "biology",
+    "geospacial"
+  ],
+  "author": "",
+  "license": "MIT"
+}
