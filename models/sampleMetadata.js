@@ -2,28 +2,22 @@ var mongoose= require('mongoose')
    ,Schema= mongoose.Schema
    ,ObjectId = Schema.ObjectId;
 
-function latValidator (lat){
-	var lon = ^(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)$;
-	return lon.test(lat);
-};
-
-
 
 var sampleMetadataSchema = new Schema({
-	studyId: {type: ObjectId, default: null, required: true},
-	sampleId: {type: String, default: null, required: true},
+	studyId: {type: ObjectId, default: null},
+	sampleId: {type: Schema.Types.Mixed, default: null, required: true},
 	sampleName: {type: String, default: null, required: true},
-	submissionDate: {type: Date, default:Date.now, required: true},  
-	domain: {type: String, default: null, required: true},
-	sideId: {type: String, default: null},
-	latitude: {type: Number, default: null, validate: [latValidator, 'invalid latitude'], required: true}, 
-	longitude: {type: Number, default: null, validate: [latValidator, 'invalid longitude'], required: true},
+	samplingDate: {type: Date, default:Date.now, required: true},  
+	domain: {type: String, default: null },
+	siteId: {type: String, default: null},
+	latitude: {type: String, default: null, required: true}, 
+	longitude: {type: String, default: null, required: true},
 	hostName: {type: String, default: null},
 	hostTissue: {type: String, default: null},
 	taxonId: {type: Number, default: null},
 	dbh: {type: Number, default: null},
-	distanceToRiver: {type Number, default: null},
-	distanceToPopulus: {type: Number, default: null},
+	distanceToRiver: {type: Number, default: null},
+	distanceToPopulus: {type: Schema.Types.Mixed, default: null},
 	distanceToRoots: {type: Number, default: null},
 	proximalTrees: {type: Number, default: null},
 	proximalPoplarTrees: {type: Number, default: null},
@@ -50,5 +44,4 @@ var sampleMetadataSchema = new Schema({
 	zinc: {type: Number, default: null}
 });
 
-var sampleMetadata = mongoose.model('sampleMetadata', sampleMetadataSchema);
-module.exports = sampleMetadata;
+module.exports = mongoose.model('sampleMetadata', sampleMetadataSchema);
