@@ -2,6 +2,7 @@ var lodash = require('lodash');
 var async = require('async');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/test');
+var uuid = require('uuid');
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -12,7 +13,6 @@ db.once('open', function callback () {
 var sampleMetadata = require('../models/sampleMetadata.js');
 
 var header = [
-        'studyId',
         'sampleId',
         'sampleName',
         'samplingDate',
@@ -52,22 +52,49 @@ var header = [
         'zinc'
 ];
 
-
+var saveArray = [];
 var csv = require('csv');
 csv()
 .fromPath(__dirname+'/sampleMetadata.csv', { delimiter: '\t'})
 .transform( function(row){
   return row;
 })
-.on('data', function(row,index2){
-		var newRow = new sampleMetadata();
-		newRow = lodash.zipObject(header, row);
-		console.log(newRow);
-		newRow.save();
+.on('data', function(row,index){
+		newRow = new sampleMetadata();
+		newObj = lodash.zipObject(header, row);
+		lodash.assign(newRow, newObj);
+		newRow.studyId = mongoose.Types.ObjectId();
+		saveArray.push(newRow);
 })
 .on('end', function(count){
+  saveArray.forEach(function(item, index){
+	if(index +1 == saveArray.length){
+		console.log('finalBlock');
+		item.save(function(err,item){
+			if(err) {
+				console.log(err);
+				process.exit(0);
+			} else {
+				console.log(item);
+				process.exit(0);
+			}
+		});
+	} else {
+		console.log(saveArray.length);
+		item.save(function(err, item){
+			if (err) {
+				console.log(err);
+			} else {
+				console.log('continueBlock');
+				console.log(index);
+				//console.log(item);
+			}
+		  });
+	}
+ });	
+
   console.log('Number of lines: '+count);
-	process.exit(0);
+  
 })
 .on('error', function(error){
   console.log(error.message);
