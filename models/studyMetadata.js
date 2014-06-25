@@ -17,7 +17,7 @@ var studyMetadataSchema = new Schema({
 	sequencingCenter: {type: String, default: null},
 	funding: {type: String, default: null},
 	contact: {type: String, default: null, required: true},
-	email: {type: String, default: null validate: [validateEmail, 'email not valid'},
+	email: {type: String, default: null validate: [validateEmail, 'email not valid'], required: true },
 	published: {type: String, default: null},
 	availability: {type: String, default: null, required: true},
 	submissionDate: {type: Date, default: Date.now}
