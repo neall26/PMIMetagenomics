@@ -11,6 +11,8 @@ var bacterialTestSchema = new Schema({
 	class: {type: String, default: null},
 	order: {type: String, default: null},
 	family: {type: String, default: null},
+	genus: {type: String, default: null},
+	species: {type: String, default: null},
 	abundance: {type: Number, default: 0}
 });
 

@@ -8,6 +8,7 @@ var sampleMetadataSchema = new Schema({
 	sampleId: {type: Schema.Types.Mixed, default: null, required: true},
 	sampleName: {type: String, default: null, required: true},
 	sampleGoldId: {type: String, default: null},
+	sampleLegacyGoldId: {type: String, default: null},
 	samplingDate: {type: Date, default:Date.now, required: true},  
 	domain: {type: String, default: null },
 	analysisType: {type: String, default: null},

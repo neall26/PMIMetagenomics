@@ -12,6 +12,7 @@ var speciesCharacteristicsSchema = new Schema({
 	order: {type: String, default: null},
 	family: {type: String, default: null},
 	genus: {type: String, default: null},
+	species: {type: String, default: null},
 	abundance: {type: Number, default: null}
 });
 

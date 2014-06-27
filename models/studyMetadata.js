@@ -10,7 +10,9 @@ function validateEmail(email){
 
 var studyMetadataSchema = new Schema({
 	studyName: {type: String, default: null, required: true},
-	studyId: {type String, default: null, required: true},
+	studyId: {type: String, default: null, required: true},
+	studyGoldId: {type: String, default: null},
+	studyLegacyGoldId: {type: String, default: null},
 	ncbiId: {type: Number, default: null},
 	ncbiAccension: {type: String, default: null},
 	ncbiName: {type: String, default: null},
@@ -24,5 +26,4 @@ var studyMetadataSchema = new Schema({
 });
 
 
-var studyMetadata = mongoose.model('studyMetadata', studyMetadataSchema);
-module.exports= studyMetadata;
+module.exports = mongoose.model('studyMetadata', studyMetadataSchema);

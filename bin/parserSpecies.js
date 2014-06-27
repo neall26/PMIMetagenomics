@@ -41,6 +41,8 @@ csv()
 		var sClass;
 		var order;
 		var family;
+		var genus
+		var species
   //lodash.forEach(row, function(column, index) {
 	var index = 0;
   async.eachSeries(row, function(column, done) {
@@ -67,6 +69,8 @@ csv()
 			 sClass = test[2];
 			 order = test[3];
 			 family= test[4];
+			 genus = test[5];
+			 species = test[6];
 
 		}
 		if(column > 0 && index>8){
@@ -78,6 +82,8 @@ csv()
 			newRow.class = sClass;
 			newRow.order = order;
 			newRow.family = family;
+			newRow.genus = genus;
+			newRow.species = species;
 			newRow.treeId = treeArray[index];
 			//console.log(column);
 			//console.dir(newRow);
