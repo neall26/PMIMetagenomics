@@ -27,7 +27,7 @@ var checkComplete = function() {
 };
 var iterator = ';';
 csv()
-.fromPath(__dirname+'/Bacterial_otu_table_2010.csv', { delimiter: '\t'})
+.fromPath('../data/Bacterial_otu_table_2010.csv', { delimiter: '\t'})
 .toPath(__dirname+'/sample.out')
 .transform( function(row){
   return row;
@@ -73,7 +73,7 @@ csv()
 			 species = test[6];
 
 		}
-		if(column > 0 && index>8){
+		if(column > 0 && index>1){
 			newRow.speciesId = speciesId;
 			newRow.lineage = lineage;
 			newRow.abundance = column;
