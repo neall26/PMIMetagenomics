@@ -4,7 +4,7 @@ var mongoose= require('mongoose')
 
 
 var sampleMetadataSchema = new Schema({
-	studyId: {type: ObjectId, default: null},
+	studyId: {type: ObjectId, default: null, required: true},
 	sampleId: {type: Schema.Types.Mixed, default: null, required: true},
 	sampleName: {type: String, default: null, required: true},
 	sampleGoldId: {type: String, default: null},
