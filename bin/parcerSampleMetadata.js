@@ -15,11 +15,18 @@ var sampleMetadata = require('../models/sampleMetadata.js');
 var header = [
         'sampleId',
         'sampleName',
+	'sampleGoldId',
         'samplingDate',
         'domain',
+	'analysisType',
+	'ecosystemSubtype',
+	'sampleGenomeSize',
+	'sampleGeneCount',
+	'sampleScaffoldCount',
         'siteId',
         'latitude',
         'longitude',
+	'altitude',
         'hostName',
         'hostTissue',
         'taxonId',
@@ -69,7 +76,6 @@ csv()
 .on('end', function(count){
   saveArray.forEach(function(item, index){
 	if(index +1 == saveArray.length){
-		console.log('finalBlock');
 		item.save(function(err,item){
 			if(err) {
 				console.log(err);
@@ -80,14 +86,10 @@ csv()
 			}
 		});
 	} else {
-		console.log(saveArray.length);
 		item.save(function(err, item){
 			if (err) {
 				console.log(err);
 			} else {
-				console.log('continueBlock');
-				console.log(index);
-				//console.log(item);
 			}
 		  });
 	}
