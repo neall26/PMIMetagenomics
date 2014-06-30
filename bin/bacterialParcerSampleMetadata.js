@@ -10,6 +10,7 @@ db.once('open', function callback () {
 	console.log('connected successfully');
 });
 
+var studyMetadata = require('../models/studyMetadata.js');
 var sampleMetadata = require('../models/sampleMetadata.js');
 
 var header = [
@@ -62,49 +63,61 @@ var header = [
 var saveArray = [];
 var csv = require('csv');
 
-if(process.argv.length < 3){
+
+
+if(process.argv.length < 4){
 	console.log('required input missing');
 	process.exit(0);
 }
 
+studyMetadata.find({studyId: process.argv[2]}, function( item, err ) {
+	if (err ) {
+		console.log(err);
 
-csv()
-.fromPath(process.argv[2], { delimiter: '\t'})
-.transform( function(row){
-  return row;
-})
-.on('data', function(row,index){
-		newRow = new sampleMetadata();
-		newObj = lodash.zipObject(header, row);
-		lodash.assign(newRow, newObj);
-		newRow.studyId = mongoose.Types.ObjectId();
-		saveArray.push(newRow);
-})
-.on('end', function(count){
-  saveArray.forEach(function(item, index){
-	if(index +1 == saveArray.length){
-		item.save(function(err,item){
-			if(err) {
-				console.log(err);
-				process.exit(0);
-			} else {
-				console.log(item);
-				process.exit(0);
-			}
-		});
 	} else {
-		item.save(function(err, item){
-			if (err) {
-				console.log(err);
-			} else {
-			}
-		  });
-	}
- });	
 
-  console.log('Number of lines: '+count);
-  
-})
-.on('error', function(error){
-  console.log(error.message);
+		csv()
+			.fromPath(process.argv[2], { delimiter: '\t'})
+			.transform( function(row){
+			  return row;
+			})
+			.on('data', function(row,index){
+					newRow = new sampleMetadata();
+					newObj = lodash.zipObject(header, row);
+					lodash.assign(newRow, newObj);
+					newRow.studyId = ;
+					saveArray.push(newRow);
+			})
+			.on('end', function(count){
+			  saveArray.forEach(function(item, index){
+				if(index + 1 == saveArray.length){
+					item.save(function(err,item){
+						if(err) {
+							console.log(err);
+							process.exit(0);
+						} else {
+							console.log(item);
+							process.exit(0);
+						}
+					});
+				} else {
+					item.save(function(err, item){
+						if (err) {
+							console.log(err);
+						} else {
+						}
+					  });
+				}
+			 });	
+
+			  console.log('Number of lines: '+count);
+			  
+			})
+			.on('error', function(error){
+			  console.log(error.message);
+			});
+
+			}
+
 });
+

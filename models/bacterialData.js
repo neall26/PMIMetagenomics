@@ -16,4 +16,4 @@ var bacterialTestSchema = new Schema({
 	abundance: {type: Number, default: 0}
 });
 
-module.exports = mongoose.model('bacterialTest', bacterialTestSchema);
+module.exports = mongoose.model('speciesCharacteristics', bacterialTestSchema);

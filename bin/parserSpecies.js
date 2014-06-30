@@ -10,7 +10,7 @@ db.once('open', function callback () {
 	console.log('connected successfully');
 });
 
-var bacterialTest = require('../models/bacterialData.js');
+var speciesCharacteristics = require('../models/bacterialData.js');
 var treeArray = [];
 var csv = require('csv');
 var complete = false;
@@ -36,7 +36,7 @@ csv()
   return row;
 })
 .on('data', function(row,index2){
-		var newRow = new bacterialTest;
+		var newRow = new speciesCharacteristics;
 		var speciesId;
 		var lineage;
 		var kingdom;
@@ -97,12 +97,12 @@ csv()
 			newRow.save(function(err, item){
 				if(err){
 					console.log(err);
-					newRow = new bacterialTest;
+					newRow = new speciesCharacteristics;
 					done();
 				}
 				else{
 					console.log(item);
-					newRow = new bacterialTest;
+					newRow = new speciesCharacteristics;
 					done();
 				}
 			});
