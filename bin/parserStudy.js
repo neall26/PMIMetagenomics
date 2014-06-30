@@ -21,11 +21,14 @@ var header = [
 		//'submissionDate'
 ];
 
-
+if(process.argv.length < 3){
+	console.log('required input missing');
+	process.exit(0);
+};
 var saveArray = [];
 var csv = require('csv');
 csv()
-.fromPath('../data/bacterialStudy.csv', {delimiter: '\t'})
+.fromPath(process.argv[2], {delimiter: '\t'})
 .transform(function(row){
 	return row;
 })

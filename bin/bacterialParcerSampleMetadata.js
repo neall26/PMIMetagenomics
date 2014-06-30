@@ -61,8 +61,15 @@ var header = [
 
 var saveArray = [];
 var csv = require('csv');
+
+if(process.argv.length < 3){
+	console.log('required input missing');
+	process.exit(0);
+}
+
+
 csv()
-.fromPath('../data/bacterialSampleMetadata.csv', { delimiter: '\t'})
+.fromPath(process.argv[2], { delimiter: '\t'})
 .transform( function(row){
   return row;
 })
