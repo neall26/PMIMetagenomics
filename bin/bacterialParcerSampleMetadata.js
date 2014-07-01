@@ -70,14 +70,12 @@ if(process.argv.length < 4){
 	process.exit(0);
 }
 
-studyMetadata.find({studyId: process.argv[2]}, function( item, err ) {
+studyMetadata.find({studyId: {$regex: process.argv[2]}}, function(err, item) {
 	if (err ) {
 		console.log(err);
-
 	} else {
-
 		csv()
-			.fromPath(process.argv[2], { delimiter: '\t'})
+			.fromPath(process.argv[3], { delimiter: '\t'})
 			.transform( function(row){
 			  return row;
 			})
@@ -85,7 +83,7 @@ studyMetadata.find({studyId: process.argv[2]}, function( item, err ) {
 					newRow = new sampleMetadata();
 					newObj = lodash.zipObject(header, row);
 					lodash.assign(newRow, newObj);
-					newRow.studyId = ;
+					newRow.studyId = item[0].id;
 					saveArray.push(newRow);
 			})
 			.on('end', function(count){
@@ -96,7 +94,6 @@ studyMetadata.find({studyId: process.argv[2]}, function( item, err ) {
 							console.log(err);
 							process.exit(0);
 						} else {
-							console.log(item);
 							process.exit(0);
 						}
 					});
@@ -109,9 +106,6 @@ studyMetadata.find({studyId: process.argv[2]}, function( item, err ) {
 					  });
 				}
 			 });	
-
-			  console.log('Number of lines: '+count);
-			  
 			})
 			.on('error', function(error){
 			  console.log(error.message);
