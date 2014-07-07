@@ -67,52 +67,51 @@ if(process.argv.length < 4){
 }
 
 
-studyMetadata.find({studyId: process.argv[2]}, function(err, item){
+studyMetadata.find({studyId: {$regex: process.argv[2]}}, function(err, item){
 	if(err){
 		console.log(err);
 	}else{
-
-
-
-csv()
-.fromPath(process.argv[2], { delimiter: '\t'})
-.transform( function(row){
-  return row;
-})
-.on('data', function(row,index){
-		newRow = new sampleMetadata();
-		newObj = lodash.zipObject(header, row);
-		lodash.assign(newRow, newObj);
-		newRow.studyId = item[0].id;
-		saveArray.push(newRow);
-})
-.on('end', function(count){
-  saveArray.forEach(function(item, index){
-	if(index +1 == saveArray.length){
-		item.save(function(err,item){
-			if(err) {
-				console.log(err);
-				process.exit(0);
-			} else {
-				process.exit(0);
-			}
-		});
-	} else {
-		item.save(function(err, item){
-			if (err) {
-				console.log(err);
-			} else {
-			}
-		  });
-	}
- });	
+		csv()
+			.fromPath(process.argv[3], { delimiter: '\t'})
+			.transform( function(row){
+			  return row;
+		})
+			.on('data', function(row,index){
+				if(index != 0) {
+					newRow = new sampleMetadata();
+					newObj = lodash.zipObject(header, row);
+					lodash.assign(newRow, newObj);
+					newRow.studyId = item[0].id;
+					saveArray.push(newRow);
+				}
+			})
+			.on('end', function(count){
+			  saveArray.forEach(function(item, index){
+				if(index +1 == saveArray.length){
+					item.save(function(err,item){
+						if(err) {
+							console.log(err);
+							process.exit(0);
+						} else {
+							process.exit(0);
+						}
+					});
+				} else {
+					item.save(function(err, item){
+						if (err) {
+							console.log(err);
+						} else {
+						}
+				  });
+				}
+			});	
 
   console.log('Number of lines: '+count);
   
-})
-.on('error', function(error){
-  console.log(error.message);
-})
+			})
+		.on('error', function(error){
+			  console.log(error.message);
+		})
 
 
 }

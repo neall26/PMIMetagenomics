@@ -80,11 +80,13 @@ studyMetadata.find({studyId: {$regex: process.argv[2]}}, function(err, item) {
 			  return row;
 			})
 			.on('data', function(row,index){
+				if(index != 0) {
 					newRow = new sampleMetadata();
 					newObj = lodash.zipObject(header, row);
 					lodash.assign(newRow, newObj);
 					newRow.studyId = item[0].id;
 					saveArray.push(newRow);
+				}
 			})
 			.on('end', function(count){
 			  saveArray.forEach(function(item, index){
