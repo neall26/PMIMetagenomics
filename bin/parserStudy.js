@@ -33,10 +33,12 @@ csv()
 	return row;
 })
 .on('data', function(row, index2){
-	newRow = new studyMetadata();
-	newObj = lodash.zipObject(header, row);
-	lodash.assign(newRow, newObj);
-	saveArray.push(newRow);
+	if(index2 != 0){
+		newRow = new studyMetadata();
+		newObj = lodash.zipObject(header, row);
+		lodash.assign(newRow, newObj);
+		saveArray.push(newRow);
+	}
 })
 .on('end', function(count){
 	saveArray.forEach(function(item, index){
