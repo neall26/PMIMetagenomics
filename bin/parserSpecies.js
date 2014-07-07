@@ -96,12 +96,11 @@ if(column > 0 && index>1){
 			newRow.species = species;
 			newRow.save(function(err, item){
 				if(err){
-					//console.log(err);
+					console.log(err);
 					newRow = new speciesCharacteristics;
 					done();
 				}	
 				else{
-					//console.log(item);
 					newRow = new speciesCharacteristics;
 					done();
 				}
