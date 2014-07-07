@@ -46,7 +46,6 @@ csv()
 					console.log(err);
 					process.exit(0);
 				} else{
-					console.log(item);
 					process.exit(0);
 				}
 			});
@@ -55,7 +54,6 @@ csv()
 				if(err){
 					console.log(err);
 				} else {
-					console.log(item);
 				}
 			});
 		}

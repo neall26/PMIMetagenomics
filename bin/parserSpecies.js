@@ -101,7 +101,6 @@ csv()
 					done();
 				}
 				else{
-					console.log(item);
 					newRow = new speciesCharacteristics;
 					done();
 				}

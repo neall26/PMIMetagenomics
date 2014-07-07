@@ -86,7 +86,6 @@ csv()
 				console.log(err);
 				process.exit(0);
 			} else {
-				console.log(item);
 				process.exit(0);
 			}
 		});
