@@ -3,12 +3,12 @@ var mongoose = require('mongoose')
    ,ObjectId = Schema.ObjectId;
 
 var speciesCharacteristicsSchema = new Schema({
-	sampleId: {type: ObjectId, default: null, required: true}
+	sampleId: {type: ObjectId, default: null, required: true},
 	speciesId: {type: String, default: null, required: true},
 	lineage: {type: String, default: null, required: true},
-	kingdon: {type: String, default: null},
+	kingdom: {type: String, default: null},
 	phylum: {type: String, default: null},
-	class: {type: String, default: null},
+	sClass: {type: String, default: null},
 	order: {type: String, default: null},
 	family: {type: String, default: null},
 	genus: {type: String, default: null},
@@ -16,5 +16,5 @@ var speciesCharacteristicsSchema = new Schema({
 	abundance: {type: Number, default: null}
 });
 
-var speciesCharacteristics = mongoose.model('speciesCharacteristics', speciesCharacteristicsShema);
+var speciesCharacteristics = mongoose.model('speciesCharacteristics', speciesCharacteristicsSchema);
 module.exports = speciesCharacteristics

@@ -11,7 +11,7 @@ db.once('open', function callback () {
 });
 
 var sampleMetadata = require('../models/sampleMetadata.js');
-
+var studyMetadata = require('../models/studyMetadata.js');
 var header = [
         'sampleId',
         'sampleName',
@@ -61,10 +61,18 @@ var header = [
 
 var saveArray = [];
 var csv = require('csv');
-if(process.argv.length < 3){
+if(process.argv.length < 4){
 	console.log('required input missing');
 	process.exit(0);
 }
+
+
+studyMetadata.find({studyId: process.argv[2]}, function(err, item){
+	if(err){
+		console.log(err);
+	}else{
+
+
 
 csv()
 .fromPath(process.argv[2], { delimiter: '\t'})
@@ -75,7 +83,7 @@ csv()
 		newRow = new sampleMetadata();
 		newObj = lodash.zipObject(header, row);
 		lodash.assign(newRow, newObj);
-		newRow.studyId = mongoose.Types.ObjectId();
+		newRow.studyId = item[0].id;
 		saveArray.push(newRow);
 })
 .on('end', function(count){
@@ -105,4 +113,8 @@ csv()
 })
 .on('error', function(error){
   console.log(error.message);
+})
+
+
+}
 });
