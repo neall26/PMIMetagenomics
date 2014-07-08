@@ -1,5 +1,10 @@
 #! /bin/bash
 
+mongo --eval "db.speciescharacteristics.drop()"
+mongo --eval "db.samplemetadatas.drop()"
+mongo --eval "db.studymetadatas.drop()"
+
+
 node parserStudy.js ../data/bacterialStudy.csv
 node parserStudy.js ../data/fungalStudy.csv
 node bacterialParcerSampleMetadata.js International ../data/bacterialSampleMetadata.csv
