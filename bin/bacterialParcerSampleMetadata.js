@@ -3,6 +3,7 @@ var async = require('async');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/test');
 var uuid = require('uuid');
+var geolib = require('geolib');
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -84,6 +85,8 @@ studyMetadata.find({studyId: {$regex: process.argv[2]}}, function(err, item) {
 					newRow = new sampleMetadata();
 					newObj = lodash.zipObject(header, row);
 					lodash.assign(newRow, newObj);
+					newRow.latitude = geolib.sexagesimal2decimal(newObj.latitude);
+					newRow.longitude = geolib.sexagesimal2decimal(newObj.longitude);
 					newRow.studyId = item[0].id;
 					saveArray.push(newRow);
 				}
