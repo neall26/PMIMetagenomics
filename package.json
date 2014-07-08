@@ -12,7 +12,7 @@
     "lodash": "*",
     "geolib": "~2.0.14",
     "mongoose-validate": "*",
-    "csv" : "*",
+    "csv" : "0.1.0",
     "async" : "*"
   },
   "keywords": [
