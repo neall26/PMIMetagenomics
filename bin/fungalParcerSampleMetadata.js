@@ -2,7 +2,6 @@ var lodash = require('lodash');
 var async = require('async');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/test');
-var uuid = require('uuid');
 var geolib = require('geolib');
 
 var db = mongoose.connection;
