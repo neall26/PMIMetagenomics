@@ -21,7 +21,7 @@ exports.details = function(req, res) {
   speciesCharacteristics.find({sampleId: objID}, function(err, item){
 	console.dir(item);
 	res.render('details', {speciesCharacteristics: item});
-  }).sort({abundance : 1});
+  }).sort({abundance : 'asc'});
 };
 
 exports.map = function(req, res) {
