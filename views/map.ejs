@@ -1,0 +1,102 @@
+<!DoCTYPE html>
+  <html>
+	     <head> 
+		       <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+			       <title>Google Maps Multiple Markers</title> 
+				         <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+					         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+						     </head>
+							     <body>
+									 		<div>
+												<table><tr><td>
+								       <div id="list" style=""></div>
+										 		</td><td>
+								       <div id="map" style="width:1000px;height:800px;"></div>
+								 				</td></tr></table>
+											</div>
+									  
+									     </body>
+										  
+										     <script type="text/javascript">
+  
+       var map = new google.maps.Map(document.getElementById('map'), {
+			        zoom: 10,
+			         /*center: new google.maps.LatLng(36, -84.2),*/
+				        mapTypeId: google.maps.MapTypeId.TERRAIN
+				       });
+	      var infowindow = new google.maps.InfoWindow();
+	       $.get( "/map/data", 
+				          function( data ) {
+				           
+					            var marker, i;
+					             for (i = 0; i < data.length; i++) {  
+											 		if (i == 0){
+														map.setCenter(new google.maps.LatLng(data[i].latitude, data[i].longitude));
+													}
+						              marker = new google.maps.Marker({
+							                 position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
+								                map: map,
+																title: data[i].sampleId
+								               });
+						                             google.maps.event.addListener(marker, 'click', (function(marker, i) {
+									                       		return function() {
+																						var content= 		'<b> ID:  </b>' + data[i].sampleId + '</br>'
+																														+ '<b> Name: </b> ' + data[i].sampleName + '</br>' 
+																														+ '<b> Gold ID: </b> ' + data[i].sampleGoldId + '</br>' 
+																														+ '<b> Legacy Gold ID: </b> ' + data[i].sampleLegacyGoldId + '</br>' 
+																														+ '<b> Sampling Date: </b> ' + data[i].samplingDate + '</br>' 
+																														+ '<b> Domain: </b> ' + data[i].domain + '</br>' 
+																														+ '<b> Analysis Type: </b> ' + data[i].analysisType + '</br>' 
+																														+ '<b> Ecosystem Subtype: </b> ' + data[i].ecosystemSubtype + '</br>' 
+																														+ '<b> Genome Size: </b> ' + data[i].sampleGemoneSize + '</br>' 
+																														+ '<b> Gene Count: </b> ' + data[i].sampleGeneCount + '</br>' 
+																														+ '<b> Scaffold Count: </b> ' + data[i].sampleScaffoldCount + '</br>' 
+																														+ '<b> Site ID: </b> ' + data[i].sideId + '</br>' 
+																														+ '<b> Latitude: </b> ' + data[i].latitude + '</br>' 
+																														+ '<b> Longitude: </b> ' + data[i].longitude + '</br>' 
+																														+ '<b> Altitude: </b> ' + data[i].altitude + '</br>' 
+																														+ '<b> Host Name: </b> ' + data[i].hostName + '</br>' 
+																														+ '<b> Host Tissue: </b> ' + data[i].hostTissue + '</br>' 
+																														+ '<b> Taxonomy ID: </b> ' + data[i].taxonId + '</br>' 
+																														+ '<b> DBH: </b> ' + data[i].dbh + ' cm' + '</br>' 
+																														+ '<b> Distance to River: </b> ' + data[i].distanceToRiver + ' m' + '</br>' 
+																														+ '<b> Distance to Populus: </b> ' + data[i].distanceToPopulus + ' m' + '</br>' 
+																														+ '<b> Distance to Roots: </b> ' + data[i].distanceToRoots + ' m' + '</br>' 
+																														+ '<b> Number of Proximal Trees: </b> ' + data[i].proximalTrees + '</br>' 
+																														+ '<b> Number of Proximal Poplar Trees: </b> ' + data[i].proximalPoplarTrees + '</br>' 
+																														+ '<b> Canopy Width: </b> ' + data[i].canopyWidth + ' m' + '</br>' 
+																														+ '<b> Basal Area: </b> ' + data[i].basalArea + ' m&sup2' + '</br>' 
+																														+ '<b> Basal Area per Hectare Tree: </b> ' + data[i].basalAreaPerHectareTree + '</br>' 
+																														+ '<b> Basal Area per Hectare Populus: </b> ' + data[i].basalAreaPerHectarePopulus + '</br>' 
+																														+ '<b> Basal Area Dominance: </b> ' + data[i].basalAreaDomincance + ' %' + '</br>' 
+																														+ '<b> Soil Moisture: </b> ' + data[i].soilMoisture + ' %' + '</br>' 
+																														+ '<b> LBC 1 ppm CaCo3 pH: </b> ' + data[i].caco3 + '</br>' 
+																														+ '<b> pH CaCl2: </b> ' + data[i].cacl2 + '</br>' 
+																														+ '<b> Equivalent Water pH: </b> ' + data[i].waterPh + '</br>' 
+																														+ '<b> Sand: </b> ' + data[i].sand + ' %' + '</br>' 
+																														+ '<b> Silt: </b> ' + data[i].silt + ' %' + '</br>' 
+																														+ '<b> Clay: </b> ' + data[i].clay + ' %' + '</br>' 
+																														+ '<b> Carbon: </b> ' + data[i].carbon + ' %' + '</br>' 
+																														+ '<b> Nitrogen: </b> ' + data[i].nitrogen + ' %' + '</br>' 
+																														+ '<b> OM: </b> ' + data[i].oM + ' %' + '</br>' 
+																														+ '<b> Calcium: </b> ' + data[i].calcium + ' ppm' + '</br>' 
+																														+ '<b> Potassium: </b> ' + data[i].potassium + ' ppm' + '</br>' 
+																														+ '<b> Magnesium: </b> ' + data[i].magnesium + ' ppm' + '</br>' 
+																														+ '<b> Manganese: </b> ' + data[i].manganese + ' ppm' + '</br>' 
+																														+ '<b> Phosphorus: </b> ' + data[i].phosphorus + ' ppm' + '</br>' 
+																														+ '<b> Zinc: </b> ' + data[i].zinc + ' ppm' + '</br>' 
+																														+ '<a href="/details/' + data[i]._id + '">Details</a>';
+										                                                    infowindow.setContent(content);
+										                                                               infowindow.open(map, marker);
+											                                                                      }
+											                                                                             })(marker, i));
+							            }
+							           }
+								      );
+		  
+		   
+			  
+			     </script>
+											  
+											   </html>
+

@@ -13,7 +13,8 @@
     "geolib": "~2.0.14",
     "mongoose-validate": "*",
     "csv" : "0.1.0",
-    "async" : "*"
+    "async" : "*",
+    "ejs" : "*"
   },
   "keywords": [
     "bioinformatics",

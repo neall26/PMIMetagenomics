@@ -1,0 +1,45 @@
+<!--DOCTYPE html-->
+<html>
+	<head>
+		<title>Species Characteristics</title>
+	</head>
+	<body>
+		<table style= 'width: 800px' border = '3'>
+			<tr>
+				<th> Sample ID </th>
+				<th> Species ID </th>
+				<th> Lineage </th>
+				<th> Kingdom </th>
+				<th> Phylum </th>
+				<th> Class </th>
+				<th> Order </th>
+				<th> Family </th>
+				<th> Genus </th>
+				<th> Species </th>
+				<th> Abundance </th>
+			</tr>
+	
+			<% 
+				speciesCharacteristics.forEach(function(item, index) {
+			%>
+
+			<tr>
+				<td><%= item.sampleId %></td>
+				<td><%= item.speciesId %></td>
+				<td><%= item.lineage %>
+				<td><%= item.kingdom %></td>
+				<td><%= item.phylum %></td>
+				<td><%= item.sClass %></td>
+				<td><%= item.order %></td>
+				<td><%= item.family %></td>
+				<td><%= item.genus %></td>
+				<td><%= item.species %></td>
+				<td><%= item.abundance %></td>
+			</tr>
+			
+			<% }); %>
+			
+		</table>
+	</body>
+</html>
+	
