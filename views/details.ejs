@@ -2,13 +2,24 @@
 <html>
 	<head>
 		<title>Species Characteristics</title>
+		<!-- DataTables CSS -->
+		<link rel="stylesheet" type="text/css" href="/css/jquery.dataTables.min.css">
+  
+<!-- jQuery -->
+		<script type="text/javascript" charset="utf8" src="/js/jquery.js"></script>
+  
+<!-- DataTables -->
+		<script type="text/javascript" charset="utf8" src="/js/jquery.dataTables.min.js"></script>
+	<script>
+		$(document).ready( function() {
+			$('#details').DataTable();
+		} );
+	</script>
 	</head>
 	<body>
-		<table style= 'width: 800px' border = '3'>
-			<tr>
-				<th> Sample ID </th>
+		<table id = "details">
+			<thead><tr>
 				<th> Species ID </th>
-				<th> Lineage </th>
 				<th> Kingdom </th>
 				<th> Phylum </th>
 				<th> Class </th>
@@ -17,16 +28,14 @@
 				<th> Genus </th>
 				<th> Species </th>
 				<th> Abundance </th>
-			</tr>
+			</tr></thead><tbody>
 	
 			<% 
 				speciesCharacteristics.forEach(function(item, index) {
 			%>
 
 			<tr>
-				<td><%= item.sampleId %></td>
 				<td><%= item.speciesId %></td>
-				<td><%= item.lineage %>
 				<td><%= item.kingdom %></td>
 				<td><%= item.phylum %></td>
 				<td><%= item.sClass %></td>
@@ -38,8 +47,8 @@
 			</tr>
 			
 			<% }); %>
-			
-		</table>
+		</tbody></table>
 	</body>
+
 </html>
 	
