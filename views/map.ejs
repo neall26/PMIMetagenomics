@@ -9,7 +9,9 @@
 	<body>
 		<div>
 			<table><tr><td>
-				<div id="list" style="width: 150px; height: 800px"></div>
+				<div style="width: 150px; height: 800px">
+					<ul id='list'></ul>	
+				</div>
 			</td><td>
 				<div id="map" style="width:1000px;height:800px;"></div>
 			</td></tr></table>
@@ -26,6 +28,19 @@
 			mapTypeId: google.maps.MapTypeId.TERRAIN
 		});
 		var infowindow = new google.maps.InfoWindow();
+		$.get( "/map/study",
+			function( studies ) {
+				for(var i = 0; i< studies.length; i++) {
+					$('#list').append('<li>' +  studies[i].studyId + '</li>');
+				}
+			}
+		);
+
+
+
+
+
+
 		$.get( "/map/data", 
 			function( data ) {
 

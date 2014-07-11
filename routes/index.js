@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/test');
 var speciesCharacteristics  = require('../models/speciesCharacteristics.js');
 var sampleMetadata = require('../models/sampleMetadata.js');
+var studyMetadata = require('../models/studyMetadata.js');
 
 exports.index = function(req, res){
   res.render('index', { title: 'Express' });
@@ -30,6 +31,12 @@ exports.map = function(req, res) {
 
 exports.mapData = function(req, res) {
 	sampleMetadata.find({}, function(err, item){
+		res.send(200, item);
+	});
+};
+
+exports.mapStudy = function(req, res) {
+	studyMetadata.find({}, function(err, item){
 		res.send(200, item);
 	});
 };
