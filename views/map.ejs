@@ -11,6 +11,7 @@
 			<table><tr><td>
 				<div style="width: 150px; height: 800px">
 					<ul id='list'></ul>	
+				<div id="list" style="width: 150px; height: 800px">
 				</div>
 			</td><td>
 				<div id="map" style="width:1000px;height:800px;"></div>
@@ -20,7 +21,19 @@
 		</div>
 	</body>
 
+	<script>
+		$(function() {
+			showDetails = function(id) { 
+				alert(id);
+				// Get data from a ajax call;
+				// create a jquery display table and 
+				// Put it in $('#data')
+			};
+		});
+	</script>
+
 	<script type="text/javascript">
+
 
 		var map = new google.maps.Map(document.getElementById('map'), {
 			zoom: 10,
@@ -56,6 +69,11 @@
 					});
 			google.maps.event.addListener(marker, 'click', (function(marker, i) {
 				return function() {
+
+					var renderDetails = function(id) {
+						alert(id);
+					};
+
 					var content= 		'<b> ID:  </b>' + data[i].sampleId + '</br>'
 					+ '<b> Name: </b> ' + data[i].sampleName + '</br>' 
 					//+ '<b> Gold ID: </b> ' + data[i].sampleGoldId + '</br>' 
@@ -101,12 +119,14 @@
 					//+ '<b> Manganese: </b> ' + data[i].manganese + ' ppm' + '</br>' 
 					//+ '<b> Phosphorus: </b> ' + data[i].phosphorus + ' ppm' + '</br>' 
 					//+ '<b> Zinc: </b> ' + data[i].zinc + ' ppm' + '</br>' 
-					+ '<a href="/details/' + data[i]._id + '">Details</a>';
+					/*+ '<a href="#" onclick="renderDetails(' + data[i]._id + ');">Details</a>';*/
+					+ '<a href="javascript:void(0);" onclick="showDetails(\''+data[i]._id +'\');">Details</a>'
 					infowindow.setContent(content);
 					infowindow.open(map, marker);
 
 					document.getElementById("data").innerHTML = 
-						'<b> Gold ID: </b> ' + data[i].sampleGoldId + '</br>' 
+						"<h5>" + data[i].sampleName +"</h5><br/>"
+						+ '<b> Gold ID: </b> ' + data[i].sampleGoldId + '</br>' 
 						+ '<b> Legacy Gold ID: </b> ' + data[i].sampleLegacyGoldId + '</br>' 
 						+ '<b> Genome Size: </b> ' + data[i].sampleGemoneSize + '</br>' 
 						+ '<b> Gene Count: </b> ' + data[i].sampleGeneCount + '</br>' 
@@ -152,6 +172,7 @@
 
 
 	</script>
+
 
 </html>
 
