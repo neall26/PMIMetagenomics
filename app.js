@@ -29,8 +29,8 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/details/:id', routes.details);
 app.get('/map', routes.map);
-app.get('/map/data', routes.mapData);
-app.get('/map/study', routes.mapStudy);
+app.get('/map/data/:id', routes.mapData);
+app.get('/study/data', routes.studyData);
 
 
 

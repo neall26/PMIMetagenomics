@@ -20,9 +20,8 @@ exports.details = function(req, res) {
   //console.dir(totalSearchParam);	
   //speciesCharacteristics.find(totalSearchParam, function(err, item){
   speciesCharacteristics.find({sampleId: objID}, function(err, item){
-	console.dir(item);
-	res.render('details', {speciesCharacteristics: item});
-  }).sort({abundance : 'asc'});
+		res.send(200, item);
+	});
 };
 
 exports.map = function(req, res) {
@@ -30,12 +29,13 @@ exports.map = function(req, res) {
 };
 
 exports.mapData = function(req, res) {
-	sampleMetadata.find({}, function(err, item){
+	var objID = req.params.id;
+	sampleMetadata.find({studyId: objID}, function(err, item){
 		res.send(200, item);
 	});
 };
 
-exports.mapStudy = function(req, res) {
+exports.studyData = function(req, res) {
 	studyMetadata.find({}, function(err, item){
 		res.send(200, item);
 	});

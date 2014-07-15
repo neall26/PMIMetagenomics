@@ -5,174 +5,186 @@
 		<title>Google Maps Multiple Markers</title> 
 		<script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<!-- DataTables CSS -->
+		<link rel="stylesheet" type="text/css" href="/css/jquery.dataTables.min.css">
+  
+<!-- jQuery -->
+		<script type="text/javascript" charset="utf8" src="/js/jquery.js"></script>
+  
+<!-- DataTables -->
+		<script type="text/javascript" charset="utf8" src="/js/jquery.dataTables.min.js"></script>
 	</head>
 	<body>
 		<div>
-			<table><tr><td>
-				<div style="width: 150px; height: 800px">
+			<table><tr><td valign="top">
+				<div id="list" style="width: 200px; height: 300px">
+					<h4>List of Studies</h4>
 					<ul id='list'></ul>	
-				<div id="list" style="width: 150px; height: 800px">
 				</div>
-			</td><td>
-				<div id="map" style="width:1000px;height:800px;"></div>
+				<div id="sampleScroll" style = "width: 200px; height: 300px; overflow-y:scroll;">
+				</div>
+			</td><td valign="top">
+				<div id="map" style="width:1000px;height:600px;"></div>
 			</td></tr></table>
 		</div>
-		<div id= "data" style = "padding-left: 150px; width: 1000px; -webkit-column-count: 3; -moz-column-count: 3; column-count:3;">
+		<div id= "data" style = "padding-left:200px;width:1000px;">
 		</div>
 	</body>
-
-	<script>
-		$(function() {
-			showDetails = function(id) { 
-				alert(id);
-				// Get data from a ajax call;
-				// create a jquery display table and 
-				// Put it in $('#data')
-			};
-		});
-	</script>
 
 	<script type="text/javascript">
 
 
 		var map = new google.maps.Map(document.getElementById('map'), {
 			zoom: 10,
-			/*center: new google.maps.LatLng(36, -84.2),*/
+			center: new google.maps.LatLng(36, -84.2),
 			mapTypeId: google.maps.MapTypeId.TERRAIN
 		});
-		var infowindow = new google.maps.InfoWindow();
-		$.get( "/map/study",
+		$.get( "/study/data",
 			function( studies ) {
 				for(var i = 0; i< studies.length; i++) {
-					$('#list').append('<li>' +  studies[i].studyId + '</li>');
+					var studyIdWOU = studies[i].studyId.replace(/_/g,' ');
+				//$('#list').append('<li>' +  '<a href="javascript:void(0);" onclick="getPoints(\''+studies[i]._id +'\');">' + studies[i].studyId + '</a>' + '</li>');
+				$('#list').append('<li>' +  '<a href="javascript:void(0);" onclick="getPoints(\''+studies[i]._id +'\');">' + studyIdWOU + '</a>' + '</li>');
 				}
 			}
 		);
 
+		$(function() {
+				getPoints = function(id){
+				var table ='<table id=studySample><thead><tr><th>Sample Name</th></tr></thead><tbody>';
+		var map = new google.maps.Map(document.getElementById('map'), {
+			zoom: 10,
+			mapTypeId: google.maps.MapTypeId.TERRAIN
+		});
+					
 
 
-
-
-
-		$.get( "/map/data", 
+		$.get( "/map/data/"+id, 
 			function( data ) {
-
+				
+				gmarkers= [];
 				var marker, i;
-				for (i = 0; i < data.length; i++) {  
+				for (i = 0; i < data.length; i++) { 
 					if (i == 0){
 						map.setCenter(new google.maps.LatLng(data[i].latitude, data[i].longitude));
 					}
-					marker = new google.maps.Marker({
-						position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
-						map: map,
-						title: data[i].sampleId
-					});
-			google.maps.event.addListener(marker, 'click', (function(marker, i) {
-				return function() {
-
-					var renderDetails = function(id) {
-						alert(id);
-					};
-
-					var content= 		'<b> ID:  </b>' + data[i].sampleId + '</br>'
-					+ '<b> Name: </b> ' + data[i].sampleName + '</br>' 
-					//+ '<b> Gold ID: </b> ' + data[i].sampleGoldId + '</br>' 
-					//+ '<b> Legacy Gold ID: </b> ' + data[i].sampleLegacyGoldId + '</br>' 
-					+ '<b> Sampling Date: </b> ' + data[i].samplingDate + '</br>' 
-					+ '<b> Domain: </b> ' + data[i].domain + '</br>' 
-					+ '<b> Analysis Type: </b> ' + data[i].analysisType + '</br>' 
-					+ '<b> Ecosystem Subtype: </b> ' + data[i].ecosystemSubtype + '</br>' 
-					//+ '<b> Genome Size: </b> ' + data[i].sampleGemoneSize + '</br>' 
-					//+ '<b> Gene Count: </b> ' + data[i].sampleGeneCount + '</br>' 
-					//+ '<b> Scaffold Count: </b> ' + data[i].sampleScaffoldCount + '</br>' 
-					+ '<b> Site ID: </b> ' + data[i].sideId + '</br>' 
-					//+ '<b> Latitude: </b> ' + data[i].latitude + '</br>' 
-					//+ '<b> Longitude: </b> ' + data[i].longitude + '</br>' 
-					//+ '<b> Altitude: </b> ' + data[i].altitude + '</br>' 
-					+ '<b> Host Name: </b> ' + data[i].hostName + '</br>' 
-					+ '<b> Host Tissue: </b> ' + data[i].hostTissue + '</br>' 
-					+ '<b> Taxonomy ID: </b> ' + data[i].taxonId + '</br>' 
-					//+ '<b> DBH: </b> ' + data[i].dbh + ' cm' + '</br>' 
-					//+ '<b> Distance to River: </b> ' + data[i].distanceToRiver + ' m' + '</br>' 
-					//+ '<b> Distance to Populus: </b> ' + data[i].distanceToPopulus + ' m' + '</br>' 
-					//+ '<b> Distance to Roots: </b> ' + data[i].distanceToRoots + ' m' + '</br>' 
-					//+ '<b> Number of Proximal Trees: </b> ' + data[i].proximalTrees + '</br>' 
-					//+ '<b> Number of Proximal Poplar Trees: </b> ' + data[i].proximalPoplarTrees + '</br>' 
-					//+ '<b> Canopy Width: </b> ' + data[i].canopyWidth + ' m' + '</br>' 
-					//+ '<b> Basal Area: </b> ' + data[i].basalArea + ' m&sup2' + '</br>' 
-					//+ '<b> Basal Area per Hectare Tree: </b> ' + data[i].basalAreaPerHectareTree + '</br>' 
-					//+ '<b> Basal Area per Hectare Populus: </b> ' + data[i].basalAreaPerHectarePopulus + '</br>' 
-					//+ '<b> Basal Area Dominance: </b> ' + data[i].basalAreaDomincance + ' %' + '</br>' 
-					//+ '<b> Soil Moisture: </b> ' + data[i].soilMoisture + ' %' + '</br>' 
-					//+ '<b> LBC 1 ppm CaCo3 pH: </b> ' + data[i].caco3 + '</br>' 
-					//+ '<b> pH CaCl2: </b> ' + data[i].cacl2 + '</br>' 
-					//+ '<b> Equivalent Water pH: </b> ' + data[i].waterPh + '</br>' 
-					//+ '<b> Sand: </b> ' + data[i].sand + ' %' + '</br>' 
-					//+ '<b> Silt: </b> ' + data[i].silt + ' %' + '</br>' 
-					//+ '<b> Clay: </b> ' + data[i].clay + ' %' + '</br>' 
-					//+ '<b> Carbon: </b> ' + data[i].carbon + ' %' + '</br>' 
-					//+ '<b> Nitrogen: </b> ' + data[i].nitrogen + ' %' + '</br>' 
-					//+ '<b> OM: </b> ' + data[i].oM + ' %' + '</br>' 
-					//+ '<b> Calcium: </b> ' + data[i].calcium + ' ppm' + '</br>' 
-					//+ '<b> Potassium: </b> ' + data[i].potassium + ' ppm' + '</br>' 
-					//+ '<b> Magnesium: </b> ' + data[i].magnesium + ' ppm' + '</br>' 
-					//+ '<b> Manganese: </b> ' + data[i].manganese + ' ppm' + '</br>' 
-					//+ '<b> Phosphorus: </b> ' + data[i].phosphorus + ' ppm' + '</br>' 
-					//+ '<b> Zinc: </b> ' + data[i].zinc + ' ppm' + '</br>' 
-					/*+ '<a href="#" onclick="renderDetails(' + data[i]._id + ');">Details</a>';*/
-					+ '<a href="javascript:void(0);" onclick="showDetails(\''+data[i]._id +'\');">Details</a>'
-					infowindow.setContent(content);
-					infowindow.open(map, marker);
-
-					document.getElementById("data").innerHTML = 
-						"<h5>" + data[i].sampleName +"</h5><br/>"
-						+ '<b> Gold ID: </b> ' + data[i].sampleGoldId + '</br>' 
-						+ '<b> Legacy Gold ID: </b> ' + data[i].sampleLegacyGoldId + '</br>' 
-						+ '<b> Genome Size: </b> ' + data[i].sampleGemoneSize + '</br>' 
-						+ '<b> Gene Count: </b> ' + data[i].sampleGeneCount + '</br>' 
-						+ '<b> Scaffold Count: </b> ' + data[i].sampleScaffoldCount + '</br>' 
-						+ '<b> Latitude: </b> ' + data[i].latitude + '</br>' 
-						+ '<b> Longitude: </b> ' + data[i].longitude + '</br>' 
-						+ '<b> Altitude: </b> ' + data[i].altitude + '</br>' 
-						+ '<b> DBH: </b> ' + data[i].dbh + ' cm' + '</br>' 
-						+ '<b> Distance to River: </b> ' + data[i].distanceToRiver + ' m' + '</br>' 
-						+ '<b> Distance to Populus: </b> ' + data[i].distanceToPopulus + ' m' + '</br>' 
-						+ '<b> Distance to Roots: </b> ' + data[i].distanceToRoots + ' m' + '</br>' 
-						+ '<b> Number of Proximal Trees: </b> ' + data[i].proximalTrees + '</br>' 
-						+ '<b> Number of Proximal Poplar Trees: </b> ' + data[i].proximalPoplarTrees + '</br>' 
-						+ '<b> Canopy Width: </b> ' + data[i].canopyWidth + ' m' + '</br>' 
-						+ '<b> Basal Area: </b> ' + data[i].basalArea + ' m&sup2' + '</br>' 
-						+ '<b> Basal Area per Hectare Tree: </b> ' + data[i].basalAreaPerHectareTree + '</br>' 
-						+ '<b> Basal Area per Hectare Populus: </b> ' + data[i].basalAreaPerHectarePopulus + '</br>' 
-						+ '<b> Basal Area Dominance: </b> ' + data[i].basalAreaDomincance + ' %' + '</br>' 
-						+ '<b> Soil Moisture: </b> ' + data[i].soilMoisture + ' %' + '</br>' 
-						+ '<b> LBC 1 ppm CaCo3 pH: </b> ' + data[i].caco3 + '</br>' 
-						+ '<b> pH CaCl2: </b> ' + data[i].cacl2 + '</br>' 
-						+ '<b> Equivalent Water pH: </b> ' + data[i].waterPh + '</br>' 
-						+ '<b> Sand: </b> ' + data[i].sand + ' %' + '</br>' 
-						+ '<b> Silt: </b> ' + data[i].silt + ' %' + '</br>' 
-						+ '<b> Clay: </b> ' + data[i].clay + ' %' + '</br>' 
-						+ '<b> Carbon: </b> ' + data[i].carbon + ' %' + '</br>' 
-						+ '<b> Nitrogen: </b> ' + data[i].nitrogen + ' %' + '</br>' 
-						+ '<b> OM: </b> ' + data[i].oM + ' %' + '</br>' 
-						+ '<b> Calcium: </b> ' + data[i].calcium + ' ppm' + '</br>' 
-						+ '<b> Potassium: </b> ' + data[i].potassium + ' ppm' + '</br>' 
-						+ '<b> Magnesium: </b> ' + data[i].magnesium + ' ppm' + '</br>' 
-						+ '<b> Manganese: </b> ' + data[i].manganese + ' ppm' + '</br>' 
-						+ '<b> Phosphorus: </b> ' + data[i].phosphorus + ' ppm' + '</br>' 
-						+ '<b> Zinc: </b> ' + data[i].zinc + ' ppm' + '</br>' 
-				
-
+					table = table + '<tr><td><a href = "javascript:google.maps.event.trigger(gmarkers[\''+data[i].sampleId+'\'], \'click\')">'+data[i].sampleId+'</a></td></tr>';
 					}
-			})(marker, i));
-		}
-		}
+				table = table + '</tbody></table>';
+		document.getElementById("sampleScroll").innerHTML = table;
+		$('#studySample').dataTable();
+		var infowindow = new google.maps.InfoWindow();
+					for(var n=0; n< data.length; n++){
+						gmarkers[data[n].sampleId] = createMarker( new google.maps.LatLng(data[n].latitude, data[n].longitude), 
+								'<b> ID:  </b>' + data[n].sampleId + '</br>'
+								+ '<b> Name: </b> ' + data[n].sampleName + '</br>' 
+								+ '<b> Sampling Date: </b> ' + data[n].samplingDate + '</br>' 
+								+ '<b> Domain: </b> ' + data[n].domain + '</br>' 
+								+ '<b> Analysis Type: </b> ' + data[n].analysisType + '</br>' 
+								+ '<b> Ecosystem Subtype: </b> ' + data[n].ecosystemSubtype + '</br>' 
+								+ '<b> Host Name: </b> ' + data[n].hostName + '</br>' 
+								+ '<b> Host Tissue: </b> ' + data[n].hostTissue + '</br>' 
+								+ '<b> Taxonomy ID: </b> ' + data[n].taxonId + '</br>' 
+								+ '<a href="javascript:void(0);" onclick="showDetails(\''+data[n]._id +'\');">Details</a>', infowindow, data[n])
+						}
+			}
 	);
-
-
-
+	$(function(){
+		createMarker = function(latlng, html, infowindow, data) {
+	    var marker = new google.maps.Marker({
+					        position: latlng,
+									        map: map,
+													title: data.sampleId
+													    });
+	google.maps.event.addListener(marker, 'click', function() {
+							        infowindow.setContent(html);
+											        infowindow.open(map, marker);
+			   document.getElementById("data").innerHTML = 
+		               "<h5>" + data.sampleName +"</h5><br/>"
+			               + '<b> Gold ID: </b> ' + data.sampleGoldId + '</br>' 
+				             + '<b> Legacy Gold ID: </b> ' + data.sampleLegacyGoldId + '</br>' 
+					           + '<b> Genome Size: </b> ' + data.sampleGemoneSize + '</br>' 
+						         + '<b> Gene Count: </b> ' + data.sampleGeneCount + '</br>' 
+						         + '<b> Scaffold Count: </b> ' + data.sampleScaffoldCount + '</br>' 
+							       + '<b> Site ID: </b> ' + data.sideId + '</br>' 
+							       + '<b> Latitude: </b> ' + data.latitude + '</br>' 
+								     + '<b> Longitude: </b> ' + data.longitude + '</br>' 
+								     + '<b> Altitude: </b> ' + data.altitude + '</br>' 
+									   + '<b> DBH: </b> ' + data.dbh + ' cm' + '</br>' 
+									   + '<b> Distance to River: </b> ' + data.distanceToRiver + ' m' + '</br>' 
+										 + '<b> Distance to Populus: </b> ' + data.distanceToPopulus + ' m' + '</br>' 
+										 + '<b> Distance to Roots: </b> ' + data.distanceToRoots + ' m' + '</br>' 
+										 + '<b> Number of Proximal Trees: </b> ' + data.proximalTrees + '</br>' 
+										 + '<b> Number of Proximal Poplar Trees: </b> ' + data.proximalPoplarTrees + '</br>' 
+										 + '<b> Canopy Width: </b> ' + data.canopyWidth + ' m' + '</br>' 
+										 + '<b> Basal Area: </b> ' + data.basalArea + ' m&sup2' + '</br>' 
+										 + '<b> Basal Area per Hectare Tree: </b> ' + data.basalAreaPerHectareTree + '</br>' 
+										 + '<b> Basal Area per Hectare Populus: </b> ' + data.basalAreaPerHectarePopulus + '</br>' 
+										 + '<b> Basal Area Dominance: </b> ' + data.basalAreaDomincance + ' %' + '</br>' 
+										 + '<b> Soil Moisture: </b> ' + data.soilMoisture + ' %' + '</br>' 
+										 + '<b> LBC 1 ppm CaCo3 pH: </b> ' + data.caco3 + '</br>' 
+										 + '<b> pH CaCl2: </b> ' + data.cacl2 + '</br>' 
+										 + '<b> Equivalent Water pH: </b> ' + data.waterPh + '</br>' 
+										 + '<b> Sand: </b> ' + data.sand + ' %' + '</br>' 
+										 + '<b> Silt: </b> ' + data.silt + ' %' + '</br>' 
+										 + '<b> Clay: </b> ' + data.clay + ' %' + '</br>' 
+										 + '<b> Carbon: </b> ' + data.carbon + ' %' + '</br>' 
+										 + '<b> Nitrogen: </b> ' + data.nitrogen + ' %' + '</br>' 
+										 + '<b> OM: </b> ' + data.oM + ' %' + '</br>' 
+										 + '<b> Calcium: </b> ' + data.calcium + ' ppm' + '</br>' 
+										 + '<b> Potassium: </b> ' + data.potassium + ' ppm' + '</br>' 
+										 + '<b> Magnesium: </b> ' + data.magnesium + ' ppm' + '</br>' 
+										 + '<b> Manganese: </b> ' + data.manganese + ' ppm' + '</br>' 
+										 + '<b> Phosphorus: </b> ' + data.phosphorus + ' ppm' + '</br>' 
+										 + '<b> Zinc: </b> ' + data.zinc + ' ppm' + '</br>' 
+															    });
+					    return marker;
+		}
+	});
+}});
 	</script>
-
-
+	<script>
+		$(function() {
+		  showDetails = function(id) { 
+				$.get("/details/" + id,
+						function(species){
+				//document.getElementById("data").innerHTML =
+						var table = "" +
+					'<table id = "details">'
+					+'<thead><tr>'
+					+ '<th> Species ID </th>'
+					+ '<th> Kingdom </th>'
+					+ '<th> Phylum </th>'
+					+ '<th> Class </th>'
+					+ '<th> Order </th>'
+					+ '<th> Family </th>'
+					+ '<th> Genus </th>'
+					+ '<th> Species </th>'
+					+ '<th> Abundance </th>'
+					+ '</tr></thead><tbody>';
+						
+					for(var i=0; i< species.length; i++){
+					
+					//$('#data').append(
+						table = table + '<tr>'
+						+ '<td>'+ species[i].speciesId + '</td>'
+						+ '<td>' + species[i].kingdom + '</td>'
+						+ '<td>' + species[i].phylum + '</td>'
+						+ '<td>' + species[i].sClass + '</td>'
+						+ '<td>' + species[i].order + '</td>'
+						+ '<td>' + species[i].family + '</td>'
+						+ '<td>' + species[i].genus + '</td>'
+						+ '<td>' + species[i].species + '</td>'
+						+ '<td>' + species[i].abundance + '</td></tr>';
+						}
+						//$('#data').append('</tbody></table>');
+						table = table + '</tbody></table>';
+						document.getElementById("data").innerHTML = table;
+						$('#details').dataTable();	
+					});
+				
+			};
+		});
+	</script>
 </html>
 
