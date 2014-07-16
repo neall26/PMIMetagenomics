@@ -56,8 +56,6 @@
 			zoom: 10,
 			mapTypeId: google.maps.MapTypeId.TERRAIN
 		});
-					
-
 
 		$.get( "/map/data/"+id, 
 			function( data ) {
@@ -100,7 +98,13 @@
 							        infowindow.setContent(html);
 											        infowindow.open(map, marker);
 			   document.getElementById("data").innerHTML = 
-		               "<h5>" + data.sampleName +"</h5><br/>"
+		     						'<ul class = "tabs" id = "metadata">'
+										+ '<li><a href="#">Metadata</a></li>'
+										+ '<li><a href="#">Soil Data</a></li>'
+										+ '</ul>'
+										+ '<div class= "tabs">'
+										+ '<div id = "metadataPanel">'
+				 //"<h5>" + data.sampleName +"</h5><br/>"
 			               + '<b> Gold ID: </b> ' + data.sampleGoldId + '</br>' 
 				             + '<b> Legacy Gold ID: </b> ' + data.sampleLegacyGoldId + '</br>' 
 					           + '<b> Genome Size: </b> ' + data.sampleGemoneSize + '</br>' 
@@ -121,6 +125,8 @@
 										 + '<b> Basal Area per Hectare Tree: </b> ' + data.basalAreaPerHectareTree + '</br>' 
 										 + '<b> Basal Area per Hectare Populus: </b> ' + data.basalAreaPerHectarePopulus + '</br>' 
 										 + '<b> Basal Area Dominance: </b> ' + data.basalAreaDomincance + ' %' + '</br>' 
+										 + '</div>'
+										 + '<div id = "soilPanel">'
 										 + '<b> Soil Moisture: </b> ' + data.soilMoisture + ' %' + '</br>' 
 										 + '<b> LBC 1 ppm CaCo3 pH: </b> ' + data.caco3 + '</br>' 
 										 + '<b> pH CaCl2: </b> ' + data.cacl2 + '</br>' 
@@ -137,6 +143,9 @@
 										 + '<b> Manganese: </b> ' + data.manganese + ' ppm' + '</br>' 
 										 + '<b> Phosphorus: </b> ' + data.phosphorus + ' ppm' + '</br>' 
 										 + '<b> Zinc: </b> ' + data.zinc + ' ppm' + '</br>' 
+										 + '</div>'
+										 + '</div>'
+										 //$("#metadata").tabs("div.panes > div");
 															    });
 					    return marker;
 		}
