@@ -48,7 +48,8 @@
 				}
 			}
 		);
-
+		
+		
 		$(function() {
 				getPoints = function(id){
 				var table ='<table id=studySample><thead><tr><th>Sample Name</th></tr></thead><tbody>';
@@ -61,13 +62,11 @@
 
 		$.get( "/map/data/"+id, 
 			function( data ) {
-				
 				gmarkers= [];
 				var marker, i;
 				for (i = 0; i < data.length; i++) { 
 					if (i == 0){
 						map.setCenter(new google.maps.LatLng(data[i].latitude, data[i].longitude));
-					}
 					table = table + '<tr><td><a href = "javascript:google.maps.event.trigger(gmarkers[\''+data[i].sampleId+'\'], \'click\')">'+data[i].sampleId+'</a></td></tr>';
 					}
 				table = table + '</tbody></table>';

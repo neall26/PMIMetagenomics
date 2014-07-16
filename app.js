@@ -31,7 +31,7 @@ app.get('/details/:id', routes.details);
 app.get('/map', routes.map);
 app.get('/map/data/:id', routes.mapData);
 app.get('/study/data', routes.studyData);
-
+app.get('/forecast/:id' , routes.forecast);
 
 
 http.createServer(app).listen(app.get('port'), function(){
