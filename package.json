@@ -12,9 +12,10 @@
     "lodash": "*",
     "geolib": "~2.0.14",
     "mongoose-validate": "*",
-    "csv" : "0.1.0",
-    "async" : "*",
-    "ejs" : "*"
+    "csv": "0.1.0",
+    "async": "*",
+    "ejs": "*",
+    "forecast": "~0.1.2"
   },
   "keywords": [
     "bioinformatics",

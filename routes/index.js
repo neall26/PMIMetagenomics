@@ -7,6 +7,8 @@ mongoose.connect('mongodb://localhost/test');
 var speciesCharacteristics  = require('../models/speciesCharacteristics.js');
 var sampleMetadata = require('../models/sampleMetadata.js');
 var studyMetadata = require('../models/studyMetadata.js');
+var Forecast = require('forecast');
+
 
 exports.index = function(req, res){
   res.render('index', { title: 'Express' });
@@ -30,7 +32,9 @@ exports.map = function(req, res) {
 
 exports.mapData = function(req, res) {
 	var objID = req.params.id;
+
 	sampleMetadata.find({studyId: objID}, function(err, item){
+		
 		res.send(200, item);
 	});
 };
@@ -38,5 +42,29 @@ exports.mapData = function(req, res) {
 exports.studyData = function(req, res) {
 	studyMetadata.find({}, function(err, item){
 		res.send(200, item);
+	});
+};
+
+exports.forecast = function(req, res) {
+	sampleObjID = req.params.id;
+	var forecast = new Forecast({
+	  service: "forecast.io",
+	  key: "7f182039e8e04bc3d28f255513be4726",
+	  units: "celcius",
+	  cache: true,
+	  ttl: {
+		minutes: 27,
+		seconds: 45
+	  }	
+	});
+	sampleMetadata.find({_id: sampleObjID}, function(err, item){
+		console.dir(item);
+		forecast.get([item.latitude, item.longitude], function(err, weather) {
+			if(err) {
+				return console.dir(err);
+			} else {
+				res.send(200, weather);
+			}
+		});
 	});
 };
