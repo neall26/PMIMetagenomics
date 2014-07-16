@@ -68,7 +68,6 @@
 						table = table + '<tr><td><a href = "javascript:google.maps.event.trigger(gmarkers[\''+data[i].sampleId+'\'], \'click\')">'+data[i].sampleId+'</a></td></tr>';
 					}
 				table = table + '</tbody></table>';
-<<<<<<< HEAD
 		document.getElementById("sampleScroll").innerHTML = table;
 		$('#studySample').dataTable();
 		var infowindow = new google.maps.InfoWindow();
@@ -97,95 +96,10 @@
 	google.maps.event.addListener(marker, 'click', function() {
 							        infowindow.setContent(html);
 											        infowindow.open(map, marker);
-			   /*document.getElementById("data").innerHTML = 
-=======
-					
-				document.getElementById("sampleScroll").innerHTML = table;
-				$('#studySample').dataTable();
-				var infowindow = new google.maps.InfoWindow();
-				for(var n=0; n< data.length; n++){
-					gmarkers[data[n].sampleId] = createMarker( new google.maps.LatLng(data[n].latitude, data[n].longitude), 
-							'<b> ID:  </b>' + data[n].sampleId + '</br>'
-							+ '<b> Name: </b> ' + data[n].sampleName + '</br>' 
-							+ '<b> Sampling Date: </b> ' + data[n].samplingDate + '</br>' 
-							+ '<b> Domain: </b> ' + data[n].domain + '</br>' 
-							+ '<b> Analysis Type: </b> ' + data[n].analysisType + '</br>' 
-							+ '<b> Ecosystem Subtype: </b> ' + data[n].ecosystemSubtype + '</br>' 
-							+ '<b> Host Name: </b> ' + data[n].hostName + '</br>' 
-							+ '<b> Host Tissue: </b> ' + data[n].hostTissue + '</br>' 
-							+ '<b> Taxonomy ID: </b> ' + data[n].taxonId + '</br>' 
-							+ '<a href="javascript:void(0);" onclick="showDetails(\''+data[n] +'\');">Details</a>', infowindow, data[n])
-				}
-			});
-		$(function(){
-			createMarker = function(latlng, html, infowindow, data) {
-			    var marker = new google.maps.Marker({
-					        position: latlng, 
-						map: map,
-						title: data.sampleId
-			    });
-			
-				google.maps.event.addListener(marker, 'click', function() {
-					infowindow.setContent(html);
-					infowindow.open(map, marker);
 			   		
-					/*document.getElementById("data").innerHTML = 
->>>>>>> be4ea5cfb200f65ded4199d4a66b313df677a833
-		     						'<ul class = "tabs" id = "metadata">'
-										+ '<li><a href="#">Metadata</a></li>'
-										+ '<li><a href="#">Soil Data</a></li>'
-										+ '</ul>'
-										+ '<div class= "tabs">'
-										+ '<div id = "metadataPanel">'
-				 //"<h5>" + data.sampleName +"</h5><br/>"
-			               + '<b> Gold ID: </b> ' + data.sampleGoldId + '</br>' 
-				             + '<b> Legacy Gold ID: </b> ' + data.sampleLegacyGoldId + '</br>' 
-					           + '<b> Genome Size: </b> ' + data.sampleGemoneSize + '</br>' 
-						         + '<b> Gene Count: </b> ' + data.sampleGeneCount + '</br>' 
-						         + '<b> Scaffold Count: </b> ' + data.sampleScaffoldCount + '</br>' 
-							       + '<b> Site ID: </b> ' + data.sideId + '</br>' 
-							       + '<b> Latitude: </b> ' + data.latitude + '</br>' 
-								     + '<b> Longitude: </b> ' + data.longitude + '</br>' 
-								     + '<b> Altitude: </b> ' + data.altitude + '</br>' 
-									   + '<b> DBH: </b> ' + data.dbh + ' cm' + '</br>' 
-									   + '<b> Distance to River: </b> ' + data.distanceToRiver + ' m' + '</br>' 
-										 + '<b> Distance to Populus: </b> ' + data.distanceToPopulus + ' m' + '</br>' 
-										 + '<b> Distance to Roots: </b> ' + data.distanceToRoots + ' m' + '</br>' 
-										 + '<b> Number of Proximal Trees: </b> ' + data.proximalTrees + '</br>' 
-										 + '<b> Number of Proximal Poplar Trees: </b> ' + data.proximalPoplarTrees + '</br>' 
-										 + '<b> Canopy Width: </b> ' + data.canopyWidth + ' m' + '</br>' 
-										 + '<b> Basal Area: </b> ' + data.basalArea + ' m&sup2' + '</br>' 
-										 + '<b> Basal Area per Hectare Tree: </b> ' + data.basalAreaPerHectareTree + '</br>' 
-										 + '<b> Basal Area per Hectare Populus: </b> ' + data.basalAreaPerHectarePopulus + '</br>' 
-										 + '<b> Basal Area Dominance: </b> ' + data.basalAreaDomincance + ' %' + '</br>' 
-										 + '</div>'
-										 + '<div id = "soilPanel">'
-										 + '<b> Soil Moisture: </b> ' + data.soilMoisture + ' %' + '</br>' 
-										 + '<b> LBC 1 ppm CaCo3 pH: </b> ' + data.caco3 + '</br>' 
-										 + '<b> pH CaCl2: </b> ' + data.cacl2 + '</br>' 
-										 + '<b> Equivalent Water pH: </b> ' + data.waterPh + '</br>' 
-										 + '<b> Sand: </b> ' + data.sand + ' %' + '</br>' 
-										 + '<b> Silt: </b> ' + data.silt + ' %' + '</br>' 
-										 + '<b> Clay: </b> ' + data.clay + ' %' + '</br>' 
-										 + '<b> Carbon: </b> ' + data.carbon + ' %' + '</br>' 
-										 + '<b> Nitrogen: </b> ' + data.nitrogen + ' %' + '</br>' 
-										 + '<b> OM: </b> ' + data.oM + ' %' + '</br>' 
-										 + '<b> Calcium: </b> ' + data.calcium + ' ppm' + '</br>' 
-										 + '<b> Potassium: </b> ' + data.potassium + ' ppm' + '</br>' 
-										 + '<b> Magnesium: </b> ' + data.magnesium + ' ppm' + '</br>' 
-										 + '<b> Manganese: </b> ' + data.manganese + ' ppm' + '</br>' 
-										 + '<b> Phosphorus: </b> ' + data.phosphorus + ' ppm' + '</br>' 
-										 + '<b> Zinc: </b> ' + data.zinc + ' ppm' + '</br>' 
-										 + '</div>'
-<<<<<<< HEAD
+					document.getElementById("data").innerHTML = "";
 															    });
-					    return marker;
-=======
-										 + '</div>'
-										 //$("#metadata").tabs("div.panes > div");*/
-				});
 					return marker;
->>>>>>> be4ea5cfb200f65ded4199d4a66b313df677a833
 		}
 	});
 }});
@@ -194,8 +108,87 @@
 		$(function() {
 		  showDetails = function(data) { 
 			document.getElementById("data").innerHTML = 
-				'<a href="javascript:void(0);" onclick="getForecast(\''+ data +'\');">Forecast</a>'
-				/*
+			'<a href="javascript:void(0);" onclick="getForecast(\''+ data +'\');">Forecast</a>' + '</br>'
+			+ '<a href="javascript:void(0);" onclick="getMetadata(\''+ data +'\');">Get Metadata</a>' + '</br>'
+			+ '<a href="javascript:void(0);" onclick="getSoil(\''+ data +'\');">Get Soil</a>' + '</br>'
+				+ '<a href="javascript:void(0);" onclick="getSpecies(\''+ data +'\');">Get Species</a>';
+				
+			};
+		});
+		$(function() {
+		  getForecast = function(id) {
+				$.get("/forecast/" + id.latitude + "/" + id.longitude + "/" + id.samplingDate,
+					function(weather) {
+						alert(weather)
+					}	
+				)};
+		});
+		$(function() { 
+				getMetadata = function(id) {
+					$.get('sample/data/' + id,
+						function(data){
+					document.getElementById("data").innerHTML = 
+										 '<a href="javascript:void(0);" onclick="getForecast(\''+ data[0]._id +'\');">Forecast</a>' + '</br>'
+										 + '<a href="javascript:void(0);" onclick="getSoil(\''+ data[0]._id +'\');">Get Soil</a>' + '</br>'
+										 + '<a href="javascript:void(0);" onclick="getSpecies(\''+ data[0]._id +'\');">Get Species</a>'
+				 						 + "<h5>" + data[0].sampleName +"</h5><br/>"
+			               + '<b> Gold ID: </b> ' + data[0].sampleGoldId + '</br>' 
+				             + '<b> Legacy Gold ID: </b> ' + data[0].sampleLegacyGoldId + '</br>' 
+					           + '<b> Genome Size: </b> ' + data[0].sampleGemoneSize + '</br>' 
+						         + '<b> Gene Count: </b> ' + data[0].sampleGeneCount + '</br>' 
+						         + '<b> Scaffold Count: </b> ' + data[0].sampleScaffoldCount + '</br>' 
+							       + '<b> Site ID: </b> ' + data[0].sideId + '</br>' 
+							       + '<b> Latitude: </b> ' + data[0].latitude + '</br>' 
+								     + '<b> Longitude: </b> ' + data[0].longitude + '</br>' 
+								     + '<b> Altitude: </b> ' + data[0].altitude + '</br>' 
+									   + '<b> DBH: </b> ' + data[0].dbh + ' cm' + '</br>' 
+									   + '<b> Distance to River: </b> ' + data[0].distanceToRiver + ' m' + '</br>' 
+										 + '<b> Distance to Populus: </b> ' + data[0].distanceToPopulus + ' m' + '</br>' 
+										 + '<b> Distance to Roots: </b> ' + data[0].distanceToRoots + ' m' + '</br>' 
+										 + '<b> Number of Proximal Trees: </b> ' + data[0].proximalTrees + '</br>' 
+										 + '<b> Number of Proximal Poplar Trees: </b> ' + data[0].proximalPoplarTrees + '</br>' 
+										 + '<b> Canopy Width: </b> ' + data[0].canopyWidth + ' m' + '</br>' 
+										 + '<b> Basal Area: </b> ' + data[0].basalArea + ' m&sup2' + '</br>' 
+										 + '<b> Basal Area per Hectare Tree: </b> ' + data[0].basalAreaPerHectareTree + '</br>' 
+										 + '<b> Basal Area per Hectare Populus: </b> ' + data[0].basalAreaPerHectarePopulus + '</br>' 
+										 + '<b> Basal Area Dominance: </b> ' + data[0].basalAreaDomincance + ' %' + '</br>';
+						}
+					)
+				}
+			});	
+		$(function() {
+				getSoil = function(id) {
+					$.get('sample/data/' + id,
+					function(data){
+						document.getElementById("data").innerHTML = 
+							'<a href="javascript:void(0);" onclick="getForecast(\''+ data[0]._id +'\');">Forecast</a>' + '</br>'
+							+ '<a href="javascript:void(0);" onclick="getMetadata(\''+ data[0]._id +'\');">Get Metadata</a>' + '</br>'
+							+ '<a href="javascript:void(0);" onclick="getSpecies(\''+ data[0]._id +'\');">Get Species</a>'
+				 			+ "<h5>" + data[0].sampleName +"</h5><br/>"
+							+ '<b> Soil Moisture: </b> ' + data[0].soilMoisture + ' %' + '</br>' 
+							+ '<b> LBC 1 ppm CaCo3 pH: </b> ' + data[0].caco3 + '</br>' 
+							+ '<b> pH CaCl2: </b> ' + data[0].cacl2 + '</br>' 
+							+ '<b> Equivalent Water pH: </b> ' + data[0].waterPh + '</br>' 
+							+ '<b> Sand: </b> ' + data[0].sand + ' %' + '</br>' 
+							+ '<b> Silt: </b> ' + data[0].silt + ' %' + '</br>' 
+							+ '<b> Clay: </b> ' + data[0].clay + ' %' + '</br>' 
+							+ '<b> Carbon: </b> ' + data[0].carbon + ' %' + '</br>' 
+							+ '<b> Nitrogen: </b> ' + data[0].nitrogen + ' %' + '</br>' 
+							+ '<b> OM: </b> ' + data[0].oM + ' %' + '</br>' 
+							+ '<b> Calcium: </b> ' + data[0].calcium + ' ppm' + '</br>' 
+							+ '<b> Potassium: </b> ' + data[0].potassium + ' ppm' + '</br>' 
+							+ '<b> Magnesium: </b> ' + data[0].magnesium + ' ppm' + '</br>' 
+							+ '<b> Manganese: </b> ' + data[0].manganese + ' ppm' + '</br>' 
+							+ '<b> Phosphorus: </b> ' + data[0].phosphorus + ' ppm' + '</br>' 
+							+ '<b> Zinc: </b> ' + data[0].zinc + ' ppm' + '</br>';
+					}
+				)
+			}
+		});
+	
+
+		$(function() {
+			getSpecies = function(id) {
 				$.get("/details/" + id,
 						function(species){
 						var table = "" +
@@ -226,19 +219,14 @@
 						+ '<td>' + species[i].abundance + '</td></tr>';
 						}
 						table = table + '</tbody></table>';
-						document.getElementById("data").innerHTML = table;
+						document.getElementById("data").innerHTML =
+							'<a href="javascript:void(0);" onclick="getForecast(\''+ id +'\');">Forecast</a>' + '</br>'
+							+ '<a href="javascript:void(0);" onclick="getMetadata(\''+ id +'\');">Get Metadata</a>' + '</br>'
+							+ '<a href="javascript:void(0);" onclick="getSoil(\''+ id +'\');">Get Soil</a>' + '</br>'
+						  +	table;
 						$('#details').dataTable();	
-					});*/
-				
-			};
-		});
-		$(function() {
-		  getForecast = function(id) {
-				$.get("/forecast/" + id.latitude + "/" + id.longitude + "/" + id.samplingDate,
-					function(weather) {
-						alert(weather)
-					}	
-				)};
+					});
+			}
 		});
 	</script>
 </html>
