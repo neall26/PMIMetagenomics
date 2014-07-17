@@ -143,7 +143,7 @@
 		});
 
 		getValidValue = function(label, obj) {
-			if (obj != null) {
+			if (obj || obj === 0){// != null || obj != undefined) {
 				return '<b>' + label + ': </b> ' + obj+ '</br>'
 			} else {
 				return ""
@@ -155,33 +155,31 @@
 				getMetadata = function(id) {
 					$.get('sample/data/' + id,
 						function(data){
-						if (data[0].sampleGoldId)
 					document.getElementById("data").innerHTML = 
 										 '<a href="javascript:void(0);" onclick="getForecast(\''+ data[0]._id +'\');">Forecast</a>' + '</br>'
 										 + '<a href="javascript:void(0);" onclick="getSoil(\''+ data[0]._id +'\');">Get Soil Data</a>' + '</br>'
 										 + '<a href="javascript:void(0);" onclick="getSpecies(\''+ data[0]._id +'\');">Get Species Details</a>'
 				 						 + "<h5>" + data[0].sampleName +"</h5><br/>"
-										 + getValidValue("Gold Id", data[0].sampleGoldId)
-			               //+ '<b> Gold ID: </b> ' + data[0].sampleGoldId + '</br>' 
-				             + '<b> Legacy Gold ID: </b> ' + data[0].sampleLegacyGoldId + '</br>' 
-					           + '<b> Genome Size: </b> ' + data[0].sampleGemoneSize + '</br>' 
-						         + '<b> Gene Count: </b> ' + data[0].sampleGeneCount + '</br>' 
-						         + '<b> Scaffold Count: </b> ' + data[0].sampleScaffoldCount + '</br>' 
-							       + '<b> Site ID: </b> ' + data[0].sideId + '</br>' 
-							       + '<b> Latitude: </b> ' + data[0].latitude + '</br>' 
-								     + '<b> Longitude: </b> ' + data[0].longitude + '</br>' 
-								     + '<b> Altitude: </b> ' + data[0].altitude + '</br>' 
-									   + '<b> DBH: </b> ' + data[0].dbh + ' cm' + '</br>' 
-									   + '<b> Distance to River: </b> ' + data[0].distanceToRiver + ' m' + '</br>' 
-										 + '<b> Distance to Populus: </b> ' + data[0].distanceToPopulus + ' m' + '</br>' 
-										 + '<b> Distance to Roots: </b> ' + data[0].distanceToRoots + ' m' + '</br>' 
-										 + '<b> Number of Proximal Trees: </b> ' + data[0].proximalTrees + '</br>' 
-										 + '<b> Number of Proximal Poplar Trees: </b> ' + data[0].proximalPoplarTrees + '</br>' 
-										 + '<b> Canopy Width: </b> ' + data[0].canopyWidth + ' m' + '</br>' 
-										 + '<b> Basal Area: </b> ' + data[0].basalArea + ' m&sup2' + '</br>' 
-										 + '<b> Basal Area per Hectare Tree: </b> ' + data[0].basalAreaPerHectareTree + '</br>' 
-										 + '<b> Basal Area per Hectare Populus: </b> ' + data[0].basalAreaPerHectarePopulus + '</br>' 
-										 + '<b> Basal Area Dominance: </b> ' + data[0].basalAreaDomincance + ' %' + '</br>';
+										 + getValidValue("Gold Id", data[0].sampledGenomeSize)
+										 + getValidValue("Legacy Gold ID", data[0].samplelegacyGoldId)
+										 + getValidValue("Genome Size", data[0].sampledGenomeSize)
+										 + getValidValue("Genome Count", data[0].sampledGeneCount)
+										 + getValidValue("Scaffold Count", data[0].sampleScaffoldCount)
+										 + getValidValue("Side ID", data[0].siteId)
+										 + getValidValue("Latitude", data[0].latitude)
+										 + getValidValue("Longitude", data[0].longitude)
+										 + getValidValue("Alitidue", data[0].altitude)
+										 + getValidValue("DBH", data[0].dbh)
+										 + getValidValue("Distance to River", data[0].distanceToRiver)
+										 + getValidValue("Distance to Populus", data[0].distanceToPopulus)
+										 + getValidValue("Distance to Roots", data[0].distanceToRoots)
+										 + getValidValue("Number of Proximal Trees", data[0].proximalTrees)
+										 + getValidValue("Number of Proximal Poplar Trees", data[0].proximalPoplarTrees)
+										 + getValidValue("Canopy Width", data[0].canopyWidth)
+										 + getValidValue("Basal Area", data[0].basalArea)
+										 + getValidValue("Basal Area per Hectare Tree", data[0].basalAreaPerHectareTree)
+										 + getValidValue("Basal Area per Hectare Populus", data[0].basalAreaPerHectarePopulus)
+										 + getValidValue("Basal Area Dominace", data[0].basalAreaDominance)
 						}
 					)
 				}
@@ -195,22 +193,22 @@
 							+ '<a href="javascript:void(0);" onclick="getMetadata(\''+ data[0]._id +'\');">Get Metadata</a>' + '</br>'
 							+ '<a href="javascript:void(0);" onclick="getSpecies(\''+ data[0]._id +'\');">Get Species Details</a>'
 				 			+ "<h5>" + data[0].sampleName +"</h5><br/>"
-							+ '<b> Soil Moisture: </b> ' + data[0].soilMoisture + ' %' + '</br>' 
-							+ '<b> LBC 1 ppm CaCo3 pH: </b> ' + data[0].caco3 + '</br>' 
-							+ '<b> pH CaCl2: </b> ' + data[0].cacl2 + '</br>' 
-							+ '<b> Equivalent Water pH: </b> ' + data[0].waterPh + '</br>' 
-							+ '<b> Sand: </b> ' + data[0].sand + ' %' + '</br>' 
-							+ '<b> Silt: </b> ' + data[0].silt + ' %' + '</br>' 
-							+ '<b> Clay: </b> ' + data[0].clay + ' %' + '</br>' 
-							+ '<b> Carbon: </b> ' + data[0].carbon + ' %' + '</br>' 
-							+ '<b> Nitrogen: </b> ' + data[0].nitrogen + ' %' + '</br>' 
-							+ '<b> OM: </b> ' + data[0].oM + ' %' + '</br>' 
-							+ '<b> Calcium: </b> ' + data[0].calcium + ' ppm' + '</br>' 
-							+ '<b> Potassium: </b> ' + data[0].potassium + ' ppm' + '</br>' 
-							+ '<b> Magnesium: </b> ' + data[0].magnesium + ' ppm' + '</br>' 
-							+ '<b> Manganese: </b> ' + data[0].manganese + ' ppm' + '</br>' 
-							+ '<b> Phosphorus: </b> ' + data[0].phosphorus + ' ppm' + '</br>' 
-							+ '<b> Zinc: </b> ' + data[0].zinc + ' ppm' + '</br>';
+							+ getValidValue("Soil Moistrue", data[0].soilMoisture)
+							+ getValidValue("LBC 1 ppm CaCo3pH", data[0].caco3)
+							+ getValidValue("ph CaCl3", data[0].cacl2)
+							+ getValidValue("Equivalent Water pH", data[0].waterPh)
+							+ getValidValue("Sand", data[0].sand)
+							+ getValidValue("Silt", data[0].silt)
+							+ getValidValue("Clay", data[0].clay)
+							+ getValidValue("Carbon", data[0].carbon)
+							+ getValidValue("Nitrogen", data[0].nitrogen)
+							+ getValidValue("OM", data[0].oM)
+							+ getValidValue("Calcium", data[0].calcium)
+							+ getValidValue("Potassium", data[0].potassium)
+							+ getValidValue("Magnesium", data[0].magnesium)
+							+ getValidValue("Manganese", data[0].manganese)
+							+ getValidValue("Phosphorus", data[0].phosphorus)
+							+ getValidValue("Zinc", data[0].zinc)
 					}
 				)
 			}
