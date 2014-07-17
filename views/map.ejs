@@ -127,9 +127,9 @@
 					$.get("/forecast/" + latitude + "/" + longitude + "/" + samplingDate,
 						function(weather) {
 							document.getElementById("data").innerHTML =
-								 '<a href="javascript:void(0);" onclick="getMetadata(\''+ data +'\');">Get Metadata</a>' + '</br>'
-					                        + '<a href="javascript:void(0);" onclick="getSoil(\''+ data +'\');">Get Soil</a>' + '</br>'
-                               					+ '<a href="javascript:void(0);" onclick="getSpecies(\''+ data +'\');">Get Species</a>' + '</br>'
+								 '<a href="javascript:void(0);" onclick="getMetadata(\''+ data[0]._id +'\');">Get Metadata</a>' + '</br>'
+					                        + '<a href="javascript:void(0);" onclick="getSoil(\''+ data[0]._id +'\');">Get Soil</a>' + '</br>'
+																	+ '<a href="javascript:void(0);" onclick="getSpecies(\''+ data[0]._id +'\');">Get Species</a>' + '</br>'
 								+ '<b> Looked Like: </b>' + weather.currently.summary + '</br>'
 								+ '<b> Percent Chance Rain </b>' + weather.currently.precipProbability + ' % </br>'
 								+ '<b> Temperature: </b>' + weather.currently.temperature + ' &#176F </br>'
