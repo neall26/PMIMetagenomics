@@ -52,6 +52,7 @@
 		
 		$(function() {
 			getPoints = function(id){
+					document.getElementById("data").innerHTML = "";
 				var table ='<table id=studySample><thead><tr><th>Sample Name</th></tr></thead><tbody>';
 				var map = new google.maps.Map(document.getElementById('map'), {
 					zoom: 10,
@@ -110,14 +111,17 @@
 			document.getElementById("data").innerHTML = 
 			'<a href="javascript:void(0);" onclick="getForecast(\''+ data +'\');">Forecast</a>' + '</br>'
 			+ '<a href="javascript:void(0);" onclick="getMetadata(\''+ data +'\');">Get Metadata</a>' + '</br>'
-			+ '<a href="javascript:void(0);" onclick="getSoil(\''+ data +'\');">Get Soil</a>' + '</br>'
-				+ '<a href="javascript:void(0);" onclick="getSpecies(\''+ data +'\');">Get Species</a>';
+			+ '<a href="javascript:void(0);" onclick="getSoil(\''+ data +'\');">Get Soil Data</a>' + '</br>'
+				+ '<a href="javascript:void(0);" onclick="getSpecies(\''+ data +'\');">Get Species Details</a>';
 				
 			};
 		});
 		$(function() {
 		  getForecast = function(id) {
-				$.get("/forecast/" + id.latitude + "/" + id.longitude + "/" + id.samplingDate,
+				var latitude = -33.8683;
+				var longitude = 151.2086;
+				var samplingDate = "2013-05-06";
+				$.get("/forecast/" + latitude + "/" + longitude + "/" + samplingDate,
 					function(weather) {
 						alert(weather)
 					}	
@@ -129,8 +133,8 @@
 						function(data){
 					document.getElementById("data").innerHTML = 
 										 '<a href="javascript:void(0);" onclick="getForecast(\''+ data[0]._id +'\');">Forecast</a>' + '</br>'
-										 + '<a href="javascript:void(0);" onclick="getSoil(\''+ data[0]._id +'\');">Get Soil</a>' + '</br>'
-										 + '<a href="javascript:void(0);" onclick="getSpecies(\''+ data[0]._id +'\');">Get Species</a>'
+										 + '<a href="javascript:void(0);" onclick="getSoil(\''+ data[0]._id +'\');">Get Soil Data</a>' + '</br>'
+										 + '<a href="javascript:void(0);" onclick="getSpecies(\''+ data[0]._id +'\');">Get Species Details</a>'
 				 						 + "<h5>" + data[0].sampleName +"</h5><br/>"
 			               + '<b> Gold ID: </b> ' + data[0].sampleGoldId + '</br>' 
 				             + '<b> Legacy Gold ID: </b> ' + data[0].sampleLegacyGoldId + '</br>' 
@@ -163,7 +167,7 @@
 						document.getElementById("data").innerHTML = 
 							'<a href="javascript:void(0);" onclick="getForecast(\''+ data[0]._id +'\');">Forecast</a>' + '</br>'
 							+ '<a href="javascript:void(0);" onclick="getMetadata(\''+ data[0]._id +'\');">Get Metadata</a>' + '</br>'
-							+ '<a href="javascript:void(0);" onclick="getSpecies(\''+ data[0]._id +'\');">Get Species</a>'
+							+ '<a href="javascript:void(0);" onclick="getSpecies(\''+ data[0]._id +'\');">Get Species Details</a>'
 				 			+ "<h5>" + data[0].sampleName +"</h5><br/>"
 							+ '<b> Soil Moisture: </b> ' + data[0].soilMoisture + ' %' + '</br>' 
 							+ '<b> LBC 1 ppm CaCo3 pH: </b> ' + data[0].caco3 + '</br>' 
@@ -222,7 +226,7 @@
 						document.getElementById("data").innerHTML =
 							'<a href="javascript:void(0);" onclick="getForecast(\''+ id +'\');">Forecast</a>' + '</br>'
 							+ '<a href="javascript:void(0);" onclick="getMetadata(\''+ id +'\');">Get Metadata</a>' + '</br>'
-							+ '<a href="javascript:void(0);" onclick="getSoil(\''+ id +'\');">Get Soil</a>' + '</br>'
+							+ '<a href="javascript:void(0);" onclick="getSoil(\''+ id +'\');">Get Soil Data</a>' + '</br>'
 						  +	table;
 						$('#details').dataTable();	
 					});
