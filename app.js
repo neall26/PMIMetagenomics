@@ -32,7 +32,8 @@ app.get('/map', routes.map);
 app.get('/map/data/:id', routes.mapData);
 app.get('/sample/data/:id', routes.sampleData);
 app.get('/study/data', routes.studyData);
-app.get('/forecast/:lat/:lng/:date' , routes.weather);
+app.get('/forecast/:latitude/:longitude/:samplingDate' , routes.weather);
+app.get('/forecast2/:latitude/:longitude/:samplingDate' , routes.newWeather);
 
 
 http.createServer(app).listen(app.get('port'), function(){
