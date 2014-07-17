@@ -131,10 +131,10 @@
 					                        + '<a href="javascript:void(0);" onclick="getSoil(\''+ data +'\');">Get Soil</a>' + '</br>'
                                					+ '<a href="javascript:void(0);" onclick="getSpecies(\''+ data +'\');">Get Species</a>' + '</br>'
 								+ '<b> Looked Like: </b>' + weather.currently.summary + '</br>'
-								+ '<b> Percent Chance Rain </b>' + weather.currently.precipProbability + '</br>'
-								+ '<b> Temperature: </b>' + weather.currently.temperature + '</br>'
-								+ '<b> Humidity </b>' + weather.currently.humidity + '</br>'
-								+ '<b> Wind Speed </b>' + weather.currently.windSpeed +  '</br>'
+								+ '<b> Percent Chance Rain </b>' + weather.currently.precipProbability + ' % </br>'
+								+ '<b> Temperature: </b>' + weather.currently.temperature + ' &#176F </br>'
+								+ '<b> Humidity </b>' + weather.currently.humidity*100 + ' % </br>'
+								+ '<b> Wind Speed </b>' + weather.currently.windSpeed +  ' m/s</br>'
 								+ '<b> Pressure: </b>' + weather.currently.pressure + ' pascals </br>';
 
 						}	

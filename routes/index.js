@@ -82,7 +82,7 @@ exports.weather = function(req, res) {
 	var forecast = new Forecast({
                 service: "forecast.io",
                 key: "7f182039e8e04bc3d28f255513be4726",
-                units: "celcius",
+                units: "fahrenheit",
                 cache: true,
                 ttl:{
                         minutes: 27,
