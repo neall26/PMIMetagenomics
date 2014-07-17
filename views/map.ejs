@@ -117,12 +117,20 @@
 		});
 		$(function() {
 		  getForecast = function(id) {
-				$.get("/forecast/" + id.latitude + "/" + id.longitude + "/" + id.samplingDate,
-					function(weather) {
-						alert(weather)
-					}	
-				)};
+				$.get('sample/data/' + id, function(data){
+				var latitude =data[0].latitude; 
+				var longitude = data[0].longitude;
+				var samplingDate = data[0].samplingDate; 
+ 
+
+					$.get("/forecast/" + latitude + "/" + longitude + "/" + samplingDate,
+						function(weather) {
+							alert(JSON.stringify(weather));
+						}	
+					)
+				})};
 		});
+		
 		$(function() { 
 				getMetadata = function(id) {
 					$.get('sample/data/' + id,
