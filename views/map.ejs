@@ -135,23 +135,34 @@
 								+ '<b> Temperature: </b>' + weather.currently.temperature + ' &#176F </br>'
 								+ '<b> Humidity </b>' + weather.currently.humidity*100 + ' % </br>'
 								+ '<b> Wind Speed </b>' + weather.currently.windSpeed +  ' m/s</br>'
-								+ '<b> Pressure: </b>' + weather.currently.pressure + ' pascals </br>';
+								+ '<b> Pressure: </b>' + weather.currently.pressure + ' hectopascals (hPa) </br>';
 
 						}	
 					)
 				})};
 		});
+
+		getValidValue = function(label, obj) {
+			if (obj != null) {
+				return '<b>' + label + ': </b> ' + obj+ '</br>'
+			} else {
+				return ""
+			}
+				
+		}
 		
 		$(function() { 
 				getMetadata = function(id) {
 					$.get('sample/data/' + id,
 						function(data){
+						if (data[0].sampleGoldId)
 					document.getElementById("data").innerHTML = 
 										 '<a href="javascript:void(0);" onclick="getForecast(\''+ data[0]._id +'\');">Forecast</a>' + '</br>'
 										 + '<a href="javascript:void(0);" onclick="getSoil(\''+ data[0]._id +'\');">Get Soil Data</a>' + '</br>'
 										 + '<a href="javascript:void(0);" onclick="getSpecies(\''+ data[0]._id +'\');">Get Species Details</a>'
 				 						 + "<h5>" + data[0].sampleName +"</h5><br/>"
-			               + '<b> Gold ID: </b> ' + data[0].sampleGoldId + '</br>' 
+										 + getValidValue("Gold Id", data[0].sampleGoldId)
+			               //+ '<b> Gold ID: </b> ' + data[0].sampleGoldId + '</br>' 
 				             + '<b> Legacy Gold ID: </b> ' + data[0].sampleLegacyGoldId + '</br>' 
 					           + '<b> Genome Size: </b> ' + data[0].sampleGemoneSize + '</br>' 
 						         + '<b> Gene Count: </b> ' + data[0].sampleGeneCount + '</br>' 
