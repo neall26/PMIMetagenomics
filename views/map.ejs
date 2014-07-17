@@ -53,7 +53,7 @@
 		$(function() {
 			getPoints = function(id){
 					document.getElementById("data").innerHTML = "";
-				var table ='<table id=studySample><thead><tr><th>Sample Name</th></tr></thead><tbody>';
+				var table ='<table id=studySample><thead><tr><th></th></tr></thead><tbody>';
 				var map = new google.maps.Map(document.getElementById('map'), {
 					zoom: 10,
 					mapTypeId: google.maps.MapTypeId.TERRAIN
@@ -70,7 +70,10 @@
 					}
 				table = table + '</tbody></table>';
 		document.getElementById("sampleScroll").innerHTML = table;
-		$('#studySample').dataTable();
+		$('#studySample').dataTable({
+			/*"aaData": orgContent,*/
+			"bLengthChange": false
+		});
 		var infowindow = new google.maps.InfoWindow();
 					for(var n=0; n< data.length; n++){
 						gmarkers[data[n].sampleId] = createMarker( new google.maps.LatLng(data[n].latitude, data[n].longitude), 
@@ -109,7 +112,7 @@
 		$(function() {
 		  showDetails = function(data) { 
 			document.getElementById("data").innerHTML = 
-			'<a href="javascript:void(0);" onclick="getForecast(\''+ data +'\');">Forecast</a>' + '</br>'
+			'<a href="javascript:void(0);" onclick="getForecast(\''+ data +'\');">Get Weather Data</a>' + '</br>'
 			+ '<a href="javascript:void(0);" onclick="getMetadata(\''+ data +'\');">Get Metadata</a>' + '</br>'
 			+ '<a href="javascript:void(0);" onclick="getSoil(\''+ data +'\');">Get Soil Data</a>' + '</br>'
 				+ '<a href="javascript:void(0);" onclick="getSpecies(\''+ data +'\');">Get Species Details</a>';
@@ -156,7 +159,7 @@
 					$.get('sample/data/' + id,
 						function(data){
 					document.getElementById("data").innerHTML = 
-										 '<a href="javascript:void(0);" onclick="getForecast(\''+ data[0]._id +'\');">Forecast</a>' + '</br>'
+										 '<a href="javascript:void(0);" onclick="getForecast(\''+ data[0]._id +'\');">Get Weather Data</a>' + '</br>'
 										 + '<a href="javascript:void(0);" onclick="getSoil(\''+ data[0]._id +'\');">Get Soil Data</a>' + '</br>'
 										 + '<a href="javascript:void(0);" onclick="getSpecies(\''+ data[0]._id +'\');">Get Species Details</a>'
 				 						 + "<h5>" + data[0].sampleName +"</h5><br/>"
@@ -189,7 +192,7 @@
 					$.get('sample/data/' + id,
 					function(data){
 						document.getElementById("data").innerHTML = 
-							'<a href="javascript:void(0);" onclick="getForecast(\''+ data[0]._id +'\');">Forecast</a>' + '</br>'
+							'<a href="javascript:void(0);" onclick="getForecast(\''+ data[0]._id +'\');">Get Weather Data</a>' + '</br>'
 							+ '<a href="javascript:void(0);" onclick="getMetadata(\''+ data[0]._id +'\');">Get Metadata</a>' + '</br>'
 							+ '<a href="javascript:void(0);" onclick="getSpecies(\''+ data[0]._id +'\');">Get Species Details</a>'
 				 			+ "<h5>" + data[0].sampleName +"</h5><br/>"
@@ -248,7 +251,7 @@
 						}
 						table = table + '</tbody></table>';
 						document.getElementById("data").innerHTML =
-							'<a href="javascript:void(0);" onclick="getForecast(\''+ id +'\');">Forecast</a>' + '</br>'
+							'<a href="javascript:void(0);" onclick="getForecast(\''+ id +'\');">Get Weather Data</a>' + '</br>'
 							+ '<a href="javascript:void(0);" onclick="getMetadata(\''+ id +'\');">Get Metadata</a>' + '</br>'
 							+ '<a href="javascript:void(0);" onclick="getSoil(\''+ id +'\');">Get Soil Data</a>' + '</br>'
 						  +	table;
