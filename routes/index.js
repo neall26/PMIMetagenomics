@@ -8,6 +8,12 @@ var speciesCharacteristics  = require('../models/speciesCharacteristics.js');
 var sampleMetadata = require('../models/sampleMetadata.js');
 var studyMetadata = require('../models/studyMetadata.js');
 var Forecast = require('forecast');
+var request = require('request');
+
+
+
+
+
 
 exports.index = function(req, res){
   res.render('index', { title: 'Express' });
@@ -49,27 +55,35 @@ exports.studyData = function(req, res) {
 };
 
 exports.forecast = function(req, res) {
-	var latitude = req.params.lat;
-	var longitude = req.params.lng;
-	var date = req.params.date;
-	var forecast2 = new Forecast({
-		service: "forecast.io",
-		key: "7f182039e8e04bc3d28f255513be4726",
-		units: "fahrenheit",
-		cache: true,
-		ttl:{
-					minutes: 27,
-					seconds: 45
-		}
-	});
-	forecast2.get([latitude, longitude, date], function(err, weather){
-		if(err){
-			console.log(err);
-		} else {
-			res.send(200, weather);
-		}
+	var apikey= "7f182039e8e04bc3d28f255513be4726";
+	//var lat = '-33.8683';
+	//var lng = '151.2086';
+	//var time = '2013-05-06';
+	var lat = req.params.latitude;
+	var lng = req.params.longitude;
+	var time = req.params.samplingDate;
+	console.log(time);
+	console.log(new Date(timestamp(time)));
+	
+	       // + lat +','+lng+',2013-05-06T12:00:00-0400';
 
-	});
+
+
+	var url = 'https://api.forecast.io/forecast/' + apikey + '/'
+	        + lat +','+lng+',790905600';
+
+
+
+	request(url, function(err, data) {
+	        if (err) {
+	                console.dir(err);
+	        } else {
+	                console.dir(data.body);
+	        }
+
+	});	
+
+
 };
 
 
