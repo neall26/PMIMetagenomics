@@ -66,7 +66,6 @@ exports.forecast = function(req, res) {
 		if(err){
 			console.log(err);
 		} else {
-			console.dir(weather);
 			res.send(200, weather);
 		}
 
@@ -93,33 +92,10 @@ exports.weather = function(req, res) {
                 if(err) {
                         return console.dir(err);
                 } else {
-                        console.dir(weather);
-			res.send(200, weather);
+                		console.dir(weather.currently);
+										res.send(200, weather);
                 }
          });
 };
 
-exports.newWeather = function(req, res) {
-	var forecast = new Forecast({
-	  service: 'forecast.io',
-	  key: '7f182039e8e04bc3d28f255513be4726',
-	  units: 'celcius',
-	  cache: true,     
-	  ttl: {
-	    minutes: 27,
-	    seconds: 45
-	    }
-	});
-
-	forecast.get([-33.8683, 151.2086], function(err, weather) {
-	  if(err) {
-		console.dir(err);
-		res.send(502, err);
-	  } else {
-	  	console.dir(weather);
-		res.send(200, weather);
-	  }
-	});
-	
-}
 

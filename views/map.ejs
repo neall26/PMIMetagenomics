@@ -133,21 +133,23 @@
 								 '<a href="javascript:void(0);" onclick="getMetadata(\''+ data[0]._id +'\');">Get Metadata</a>' + '</br>'
 					                        + '<a href="javascript:void(0);" onclick="getSoil(\''+ data[0]._id +'\');">Get Soil</a>' + '</br>'
 																	+ '<a href="javascript:void(0);" onclick="getSpecies(\''+ data[0]._id +'\');">Get Species</a>' + '</br>'
-								+ '<b> Looked Like: </b>' + weather.currently.summary + '</br>'
-								+ '<b> Percent Chance Rain </b>' + weather.currently.precipProbability + ' % </br>'
-								+ '<b> Temperature: </b>' + weather.currently.temperature + ' &#176F </br>'
-								+ '<b> Humidity </b>' + weather.currently.humidity*100 + ' % </br>'
-								+ '<b> Wind Speed </b>' + weather.currently.windSpeed +  ' m/s</br>'
-								+ '<b> Pressure: </b>' + weather.currently.pressure + ' hectopascals (hPa) </br>';
-
+								+ getValidValue('Looked Like', weather.currently.summary) 
+								+ getValidValue('Percent Chance Rain', weather.currently.precipProbability, '%') 
+								+ getValidValue('Temperature', weather.currently.temperature, '&#176F')
+								+ getValidValue('Humidity', weather.currently.humidity*100, '%') 
+								+ getValidValue('Wind Speed', weather.currently.windSpeed, 'm/s') 
+								+ getValidValue('Pressure', weather.currently.pressure, 'hectopascals (hPa)');
 						}	
 					)
 				})};
 		});
 
-		getValidValue = function(label, obj) {
+		getValidValue = function(label, obj, unit) {
+			if(unit === undefined){
+				unit = '';
+			};
 			if (obj || obj === 0){// != null || obj != undefined) {
-				return '<b>' + label + ': </b> ' + obj+ '</br>'
+				return '<b>' + label + ': </b> ' + obj+ ' ' + unit+ '</br>'
 			} else {
 				return ""
 			}
@@ -171,18 +173,18 @@
 										 + getValidValue("Side ID", data[0].siteId)
 										 + getValidValue("Latitude", data[0].latitude)
 										 + getValidValue("Longitude", data[0].longitude)
-										 + getValidValue("Alitidue", data[0].altitude)
-										 + getValidValue("DBH", data[0].dbh)
-										 + getValidValue("Distance to River", data[0].distanceToRiver)
-										 + getValidValue("Distance to Populus", data[0].distanceToPopulus)
-										 + getValidValue("Distance to Roots", data[0].distanceToRoots)
+										 + getValidValue("Alitidue", data[0].altitude, 'm')
+										 + getValidValue("DBH", data[0].dbh, 'cm')
+										 + getValidValue("Distance to River", data[0].distanceToRiver, 'm')
+										 + getValidValue("Distance to Populus", data[0].distanceToPopulus, 'm')
+										 + getValidValue("Distance to Roots", data[0].distanceToRoots, 'm')
 										 + getValidValue("Number of Proximal Trees", data[0].proximalTrees)
 										 + getValidValue("Number of Proximal Poplar Trees", data[0].proximalPoplarTrees)
-										 + getValidValue("Canopy Width", data[0].canopyWidth)
-										 + getValidValue("Basal Area", data[0].basalArea)
+										 + getValidValue("Canopy Width", data[0].canopyWidth, ' m')
+										 + getValidValue("Basal Area", data[0].basalArea, ' m&#178')
 										 + getValidValue("Basal Area per Hectare Tree", data[0].basalAreaPerHectareTree)
 										 + getValidValue("Basal Area per Hectare Populus", data[0].basalAreaPerHectarePopulus)
-										 + getValidValue("Basal Area Dominace", data[0].basalAreaDominance)
+										 + getValidValue("Basal Area Dominace", data[0].basalAreaDominance, '%')
 						}
 					)
 				}
@@ -196,22 +198,22 @@
 							+ '<a href="javascript:void(0);" onclick="getMetadata(\''+ data[0]._id +'\');">Get Metadata</a>' + '</br>'
 							+ '<a href="javascript:void(0);" onclick="getSpecies(\''+ data[0]._id +'\');">Get Species Details</a>'
 				 			+ "<h5>" + data[0].sampleName +"</h5><br/>"
-							+ getValidValue("Soil Moistrue", data[0].soilMoisture)
+							+ getValidValue("Soil Moistrue", data[0].soilMoisture, '%')
 							+ getValidValue("LBC 1 ppm CaCo3pH", data[0].caco3)
 							+ getValidValue("ph CaCl3", data[0].cacl2)
 							+ getValidValue("Equivalent Water pH", data[0].waterPh)
-							+ getValidValue("Sand", data[0].sand)
-							+ getValidValue("Silt", data[0].silt)
-							+ getValidValue("Clay", data[0].clay)
-							+ getValidValue("Carbon", data[0].carbon)
-							+ getValidValue("Nitrogen", data[0].nitrogen)
-							+ getValidValue("OM", data[0].oM)
-							+ getValidValue("Calcium", data[0].calcium)
-							+ getValidValue("Potassium", data[0].potassium)
-							+ getValidValue("Magnesium", data[0].magnesium)
-							+ getValidValue("Manganese", data[0].manganese)
-							+ getValidValue("Phosphorus", data[0].phosphorus)
-							+ getValidValue("Zinc", data[0].zinc)
+							+ getValidValue("Sand", data[0].sand, '%')
+							+ getValidValue("Silt", data[0].silt, '%')
+							+ getValidValue("Clay", data[0].clay, '%')
+							+ getValidValue("Carbon", data[0].carbon, '%')
+							+ getValidValue("Nitrogen", data[0].nitrogen, '%')
+							+ getValidValue("OM", data[0].oM, '%')
+							+ getValidValue("Calcium", data[0].calcium, 'ppm')
+							+ getValidValue("Potassium", data[0].potassium, 'ppm')
+							+ getValidValue("Magnesium", data[0].magnesium, 'ppm')
+							+ getValidValue("Manganese", data[0].manganese, 'ppm')
+							+ getValidValue("Phosphorus", data[0].phosphorus, 'ppm')
+							+ getValidValue("Zinc", data[0].zinc, 'ppm')
 					}
 				)
 			}
