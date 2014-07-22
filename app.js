@@ -32,8 +32,9 @@ app.get('/map', routes.map);
 app.get('/map/data/:id', routes.mapData);
 app.get('/sample/data/:id', routes.sampleData);
 app.get('/study/data', routes.studyData);
-app.get('/forecast/:latitude/:longitude/:samplingDate' , routes.forecast);
+app.get('/forecast/:latitude/:longitude/:samplingDate' , routes.weather);
 app.get('/weather', routes.forecast);
+app.get('/uploader', routes.uploadRender);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

@@ -14,8 +14,7 @@
     "mongoose-validate": "*",
     "csv": "0.1.0",
     "async": "*",
-    "ejs": "*",
-    "forecast": "~0.1.2"
+    "ejs": "*"
   },
   "keywords": [
     "bioinformatics",

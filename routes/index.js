@@ -7,7 +7,6 @@ mongoose.connect('mongodb://localhost/test');
 var speciesCharacteristics  = require('../models/speciesCharacteristics.js');
 var sampleMetadata = require('../models/sampleMetadata.js');
 var studyMetadata = require('../models/studyMetadata.js');
-var Forecast = require('forecast');
 var request = require('request');
 
 
@@ -21,11 +20,6 @@ exports.index = function(req, res){
 
 exports.details = function(req, res) {
   var objID = req.params.id;  
-//var totalSearchParam = {};
-//  var searchSampleID = 'ObjectId("53bd9f2360427cf470097cbe")';
-  //totalSearchParam['sampleId'] = ObjectId("53bd9f2360427cf470097cf2");
-  //console.dir(totalSearchParam);	
-  //speciesCharacteristics.find(totalSearchParam, function(err, item){
   speciesCharacteristics.find({sampleId: objID}, function(err, item){
 		res.send(200, item);
 	});
@@ -65,7 +59,6 @@ exports.forecast = function(req, res) {
 	console.log(time);
 	console.log(new Date(timestamp(time)));
 	
-	       // + lat +','+lng+',2013-05-06T12:00:00-0400';
 
 
 
@@ -89,27 +82,30 @@ exports.forecast = function(req, res) {
 
 
 exports.weather = function(req, res) {
-        var latitude = req.params.latitude;
+  var latitude = req.params.latitude;
 	var longitude = req.params.longitude;
 	var date = req.params.samplingDate;
-	var forecast = new Forecast({
-                service: "forecast.io",
-                key: "7f182039e8e04bc3d28f255513be4726",
-                units: "fahrenheit",
-                cache: true,
-                ttl:{
-                        minutes: 27,
-                        seconds: 45
-                }
-         });
-        forecast.get([latitude, longitude, date], function(err, weather) {
-                if(err) {
-                        return console.dir(err);
-                } else {
-                		console.dir(weather.currently);
-										res.send(200, weather);
-                }
-         });
+	date = date.toString();
+	date = date.substring(0,10);
+	date = date.replace(/-/g,'');
+	//var apikey = "f5174f9a4c9b08d9";
+	//console.log(date);
+	//console.log(longitude);
+	//console.log(latitude);
+	//var apikey = "7f182039e8e04bc3d28f255513be4726";
+	//var url = "https://api.forecast.io/forecast/" + apikey + '/' + latitude + ',' + longitude + ',' + date;
+	var url = "http://api.wunderground.com/api/f5174f9a4c9b08d9/history_" + date + "/q/" + latitude + "," + longitude + ".json"
+	request(url, function(err, weather){
+		if(err){
+			console.dir(err);
+		} else {
+			console.dir(weather.body.history.observations);
+			res.send(200, weather);
+		}
+	});
 };
 
+exports.uploadRender = function(req, res) {
+	res.render('uploader');
+};
 
