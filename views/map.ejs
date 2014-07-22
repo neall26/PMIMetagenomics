@@ -129,16 +129,17 @@
 
 					$.get("/forecast/" + latitude + "/" + longitude + "/" + samplingDate,
 						function(weather) {
+							alert(weather.this);
 							document.getElementById("data").innerHTML =
 								 '<a href="javascript:void(0);" onclick="getMetadata(\''+ data[0]._id +'\');">Get Metadata</a>' + '</br>'
 					                        + '<a href="javascript:void(0);" onclick="getSoil(\''+ data[0]._id +'\');">Get Soil</a>' + '</br>'
 																	+ '<a href="javascript:void(0);" onclick="getSpecies(\''+ data[0]._id +'\');">Get Species</a>' + '</br>'
-								+ getValidValue('Looked Like', weather.currently.summary) 
-								+ getValidValue('Percent Chance Rain', weather.currently.precipProbability, '%') 
-								+ getValidValue('Temperature', weather.currently.temperature, '&#176F')
-								+ getValidValue('Humidity', weather.currently.humidity*100, '%') 
-								+ getValidValue('Wind Speed', weather.currently.windSpeed, 'm/s') 
-								+ getValidValue('Pressure', weather.currently.pressure, 'hectopascals (hPa)');
+								//+ getValidValue('Looked Like', weather.currently.summary);
+								//+ getValidValue('Percent Chance Rain', weather.currently.precipProbability, '%') 
+								//+ getValidValue('Temperature', weather.currently.temperature, '&#176F')
+								//+ getValidValue('Humidity', weather.currently.humidity*100, '%') 
+								//+ getValidValue('Wind Speed', weather.currently.windSpeed, 'm/s') 
+								//+ getValidValue('Pressure', weather.currently.pressure, 'hectopascals (hPa)');
 						}	
 					)
 				})};

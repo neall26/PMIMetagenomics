@@ -85,7 +85,8 @@ exports.weather = function(req, res) {
 		if(err){
 			console.dir(err);
 		} else {
-			console.dir(data.body);
+			console.log(data.body);
+			//res.send(200, data.body);
 		}
 	});
 	
