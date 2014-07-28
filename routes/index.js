@@ -99,7 +99,7 @@ exports.weather = function(req, res) {
 		if(err){
 			console.dir(err);
 		} else {
-			console.dir(weather.body.history.observations);
+			console.dir(weather.body);
 			res.send(200, weather);
 		}
 	});
