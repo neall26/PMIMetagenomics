@@ -109,6 +109,12 @@ exports.weather = function(req, res) {
 	});
 };
 
+
+exports.speciesData = function(req, res) {
+	var keyword = req.params.id;
+	console.log(keyword);
+};
+
 exports.uploadRender = function(req, res) {
 	res.render('uploader');
 };

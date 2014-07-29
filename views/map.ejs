@@ -25,8 +25,8 @@
 				</div>
 			</td><td valign="top">
 				<div id = "search">
-					<form id="searchbox" onSubmit="searchSample()">
-						<input type="search" >
+					<form id="searchbox" action="javascript:searchSample();">
+						<input name="text" type="search" >
 						<input type="submit">
 					</form>
 				</div>
@@ -114,8 +114,10 @@
 }});
 
 	$(function(){
-			sampleSearch = function(){
-				alert("Hello");
+			searchSample = function(){
+				$.get("/species/data"+document.form[0].element[0].value, function(data){
+					alert(data);
+				})
 			}
 		});
 	</script>
