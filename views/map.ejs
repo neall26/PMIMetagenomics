@@ -24,6 +24,12 @@
 				<div id="sampleScroll" style = "width: 200px; height: 300px; overflow-y:scroll;">
 				</div>
 			</td><td valign="top">
+				<div id = "search">
+					<form id="searchbox" onSubmit="searchSample()">
+						<input type="search" >
+						<input type="submit">
+					</form>
+				</div>
 				<div id="map" style="width:1000px;height:600px;"></div>
 			</td></tr></table>
 		</div>
@@ -48,8 +54,7 @@
 				}
 			}
 		);
-		
-		
+
 		$(function() {
 			getPoints = function(id){
 					document.getElementById("data").innerHTML = "";
@@ -107,6 +112,12 @@
 		}
 	});
 }});
+
+	$(function(){
+			sampleSearch = function(){
+				alert("Hello");
+			}
+		});
 	</script>
 	<script>
 		$(function() {
@@ -135,10 +146,10 @@
 																	+ '<a href="javascript:void(0);" onclick="getSpecies(\''+ data[0]._id +'\');">Get Species</a>' + '</br>'
 								//+ getValidValue('Looked Like', weather.currently.summary);
 								//+ getValidValue('Percent Chance Rain', weather.currently.precipProbability, '%') 
-								//+ getValidValue('Temperature', weather.currently.temperature, '&#176F')
+								+ getValidValue('Temperature', weather.meantempi, '&#176F')
 								//+ getValidValue('Humidity', weather.currently.humidity*100, '%') 
 								//+ getValidValue('Wind Speed', weather.currently.windSpeed, 'm/s') 
-								//+ getValidValue('Pressure', weather.currently.pressure, 'hectopascals (hPa)');
+								+ getValidValue('Pressure', weather.meanpressurem, 'hPa');
 						}	
 					)
 				})};

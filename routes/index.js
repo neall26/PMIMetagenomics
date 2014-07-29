@@ -94,13 +94,17 @@ exports.weather = function(req, res) {
 	//console.log(latitude);
 	//var apikey = "7f182039e8e04bc3d28f255513be4726";
 	//var url = "https://api.forecast.io/forecast/" + apikey + '/' + latitude + ',' + longitude + ',' + date;
-	var url = "http://api.wunderground.com/api/f5174f9a4c9b08d9/history_" + date + "/q/" + latitude + "," + longitude + ".json"
-	request(url, function(err, weather){
+	var options ={
+		url : 	"http://api.wunderground.com/api/f5174f9a4c9b08d9/history_" + date + "/q/" + latitude + "," + longitude + ".json",
+		method: 'GET',
+		headers: {'content-type': 'application/json'}
+	};	
+	request(options, function(err, response,  weather){
 		if(err){
 			console.dir(err);
 		} else {
-			console.dir(weather.body);
-			res.send(200, weather.body);
+			console.dir(JSON.parse(weather).history.dailysummary[0]);
+			res.send(200, JSON.parse(weather).history.dailysummary[0]);
 		}
 	});
 };
