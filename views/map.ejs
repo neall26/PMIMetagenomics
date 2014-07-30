@@ -23,11 +23,12 @@
 				</div>
 				<div id="sampleScroll" style = "width: 200px; height: 300px; overflow-y:scroll;">
 				</div>
+					<div id= "metadata" style = "width: 200px; height: 200px;">
 			</td><td valign="top">
 				<div id="map" style="width:1000px;height:600px;"></div>
 			</td></tr></table>
 		</div>
-		<div id= "data" style = "padding-left:200px;width:1000px;">
+		<div id= "data" style = "padding-left:201px;width:1000px;">
 		</div>
 	</body>
 
@@ -111,7 +112,7 @@
 	<script>
 		$(function() {
 		  showDetails = function(data) { 
-			document.getElementById("data").innerHTML = 
+			document.getElementById("metadata").innerHTML = 
 			'<a href="javascript:void(0);" onclick="getForecast(\''+ data +'\');">Get Weather Data</a>' + '</br>'
 			+ '<a href="javascript:void(0);" onclick="getMetadata(\''+ data +'\');">Get Metadata</a>' + '</br>'
 			+ '<a href="javascript:void(0);" onclick="getSoil(\''+ data +'\');">Get Soil Data</a>' + '</br>'
@@ -161,10 +162,7 @@
 					$.get('sample/data/' + id,
 						function(data){
 					document.getElementById("data").innerHTML = 
-										 '<a href="javascript:void(0);" onclick="getForecast(\''+ data[0]._id +'\');">Get Weather Data</a>' + '</br>'
-										 + '<a href="javascript:void(0);" onclick="getSoil(\''+ data[0]._id +'\');">Get Soil Data</a>' + '</br>'
-										 + '<a href="javascript:void(0);" onclick="getSpecies(\''+ data[0]._id +'\');">Get Species Details</a>'
-				 						 + "<h5>" + data[0].sampleName +"</h5><br/>"
+				 						 "<h5>" + data[0].sampleName +"</h5><br/>"
 										 + getValidValue("Gold Id", data[0].sampledGenomeSize)
 										 + getValidValue("Legacy Gold ID", data[0].samplelegacyGoldId)
 										 + getValidValue("Genome Size", data[0].sampledGenomeSize)
@@ -194,10 +192,7 @@
 					$.get('sample/data/' + id,
 					function(data){
 						document.getElementById("data").innerHTML = 
-							'<a href="javascript:void(0);" onclick="getForecast(\''+ data[0]._id +'\');">Get Weather Data</a>' + '</br>'
-							+ '<a href="javascript:void(0);" onclick="getMetadata(\''+ data[0]._id +'\');">Get Metadata</a>' + '</br>'
-							+ '<a href="javascript:void(0);" onclick="getSpecies(\''+ data[0]._id +'\');">Get Species Details</a>'
-				 			+ "<h5>" + data[0].sampleName +"</h5><br/>"
+				 			"<h5>" + data[0].sampleName +"</h5><br/>"
 							+ getValidValue("Soil Moistrue", data[0].soilMoisture, '%')
 							+ getValidValue("LBC 1 ppm CaCo3pH", data[0].caco3)
 							+ getValidValue("ph CaCl3", data[0].cacl2)
@@ -252,11 +247,7 @@
 						+ '<td>' + species[i].abundance + '</td></tr>';
 						}
 						table = table + '</tbody></table>';
-						document.getElementById("data").innerHTML =
-							'<a href="javascript:void(0);" onclick="getForecast(\''+ id +'\');">Get Weather Data</a>' + '</br>'
-							+ '<a href="javascript:void(0);" onclick="getMetadata(\''+ id +'\');">Get Metadata</a>' + '</br>'
-							+ '<a href="javascript:void(0);" onclick="getSoil(\''+ id +'\');">Get Soil Data</a>' + '</br>'
-						  +	table;
+						document.getElementById("data").innerHTML = table;
 						$('#details').dataTable();	
 					});
 			}
