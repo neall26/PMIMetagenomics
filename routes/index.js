@@ -7,8 +7,9 @@ mongoose.connect('mongodb://localhost/test');
 var speciesCharacteristics  = require('../models/speciesCharacteristics.js');
 var sampleMetadata = require('../models/sampleMetadata.js');
 var studyMetadata = require('../models/studyMetadata.js');
+var speciesData = require('../models/speciesCharacteristics.js');
 var request = require('request');
-
+var async = require('async');
 
 
 
@@ -112,7 +113,28 @@ exports.weather = function(req, res) {
 
 exports.speciesData = function(req, res) {
 	var keyword = req.params.id;
-	console.log(keyword);
+	var samples = [];
+	var done = false;
+	speciesData.find({lineage: {$regex: keyword, $options: 'i'}}, function(err, item){
+				for(var n=0; n<item.length; n++){
+					sampleMetadata.find({_id: item[n].sampleId}, function(err, items){
+						if(samples.length === 0){
+							samples.push(item)
+						}
+						else{
+							for(var i=0; i<samples.length; i++){
+								if(items[0]._id != samples[i][0]._id){
+									samples.push(items);
+								}
+							}
+						}
+					});
+				}
+			if(done){
+				console.log(samples);
+				res.send(200, samples);
+			}
+	});
 };
 
 exports.uploadRender = function(req, res) {
