@@ -100,7 +100,7 @@ exports.weather = function(req, res) {
 			console.dir(err);
 		} else {
 			console.dir(weather.body);
-			res.send(200, weather);
+			res.send(200, weather.body);
 		}
 	});
 };
