@@ -114,26 +114,23 @@ exports.weather = function(req, res) {
 exports.speciesData = function(req, res) {
 	var keyword = req.params.id;
 	var samples = [];
-	var done = false;
 	speciesData.find({lineage: {$regex: keyword, $options: 'i'}}, function(err, item){
-				for(var n=0; n<item.length; n++){
+		for(var n=0; n<item.length; n++){
 					sampleMetadata.find({_id: item[n].sampleId}, function(err, items){
-						if(samples.length === 0){
-							samples.push(item)
-						}
-						else{
-							for(var i=0; i<samples.length; i++){
-								if(items[0]._id != samples[i][0]._id){
-									samples.push(items);
-								}
-							}
-						}
-					});
-				}
-			if(done){
-				console.log(samples);
+								samples.push(items)
+			if(samples.length === item.length){
+				//for(var i=0; i<samples.length; i++){
+					//for(var j=0; j<samples.length; j++){
+						//if(samples[i]=== samples[i+j]){
+							//console.log(samples.length);
+							//samples = samples - samples[i+j]
+							//console.log('working')
+						//}
+					//}
+				//}
 				res.send(200, samples);
 			}
+		});}
 	});
 };
 
