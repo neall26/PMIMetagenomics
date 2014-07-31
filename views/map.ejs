@@ -26,9 +26,8 @@
 					<div id= "metadata" style = "padding-top:10px;width:200px;height:200px;">
 			</td><td valign="top">
 				<div id="map" style="width:1000px;height:600px;"></div>
+				<div id= "data" align="center" style = "width:1000px;"></div>
 			</td></tr></table>
-		</div>
-		<div id= "data" style = "padding-left:200px;width:1000px;">
 		</div>
 	</body>
 
@@ -130,6 +129,7 @@
 
 					$.get("/forecast/" + latitude + "/" + longitude + "/" + samplingDate,
 						function(weather) {
+						alert(weather);
 							document.getElementById("data").innerHTML =
 								 '<a href="javascript:void(0);" onclick="getMetadata(\''+ data[0]._id +'\');">Get Metadata</a>' + '</br>'
 					                        + '<a href="javascript:void(0);" onclick="getSoil(\''+ data[0]._id +'\');">Get Soil</a>' + '</br>'
