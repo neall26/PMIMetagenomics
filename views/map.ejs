@@ -53,6 +53,7 @@
 		$(function() {
 			getPoints = function(id){
 					document.getElementById("data").innerHTML = "";
+					document.getElementById("metadata").innerHTML = "";
 				var table ='<table id=studySample><thead><tr><th></th></tr></thead><tbody>';
 				var map = new google.maps.Map(document.getElementById('map'), {
 					zoom: 10,
@@ -102,6 +103,7 @@
 											        infowindow.open(map, marker);
 			   		
 					document.getElementById("data").innerHTML = "";
+					document.getElementById("metadata").innerHTML = "";
 															    });
 					return marker;
 		}
@@ -132,7 +134,7 @@
 							document.getElementById("data").innerHTML =
 				 			"<h5>" + data[0].sampleName +"</h5><br/>"
 							+ getValidValue('Temperature', weather.meantempi, '&#176F')
-							+ getValidValue('Pressure', weather.meanpressurem , 'hPa')
+							+ getValidValue('Pressure', weather.meanpressurem/1013.25 , 'atm')
 							+ getValidValue('Wind Speed', weather.meanwindspdi, 'mph')
 							+ getValidValue('Dew Point', weather.meandewpti, '&#176F')
 							+ getValidValue('Precipitation', weather.precipi, 'in');
