@@ -114,23 +114,45 @@ exports.weather = function(req, res) {
 exports.speciesData = function(req, res) {
 	var keyword = req.params.id;
 	var samples = [];
-	speciesData.find({lineage: {$regex: keyword, $options: 'i'}}, function(err, item){
-		for(var n=0; n<item.length; n++){
-					sampleMetadata.find({_id: item[n].sampleId}, function(err, items){
-								samples.push(items)
-			if(samples.length === item.length){
-				//for(var i=0; i<samples.length; i++){
-					//for(var j=0; j<samples.length; j++){
-						//if(samples[i]=== samples[i+j]){
-							//console.log(samples.length);
-							//samples = samples - samples[i+j]
-							//console.log('working')
-						//}
-					//}
-				//}
-				res.send(200, samples);
+	speciesData.find({lineage: {$regex: keyword, $options: 'i'}}, {sampleId: 1, _id:0},  function(err, item){
+		Array.prototype.contains = function(v) {
+			for(var i = 0; i < this.length; i++) {
+				if(this[i] === v) {
+					return true;
+				}
 			}
-		});}
+			return false;
+		};
+
+		Array.prototype.unique = function() {
+			var arr = [];
+			for(var i = 0; i < this.length; i++) {
+				if(!arr.contains(this[i])) {
+					arr.push(this[i]);
+				}
+			}
+			return arr; 
+		}
+		var getSampleId = function(){
+		var Item = [];
+		for(var n=0; n<item.length; n++){
+			Item[n]= item[n].sampleId.toString();
+		}
+		var newItem = Item.unique();
+		if(newItem){
+			getSamples(newItem);
+		}
+		}
+		var getSamples = function(newItem){
+		for(var n=0; n<newItem.length; n++){
+			sampleMetadata.find({_id: newItem[n]}, function(err, items){
+				samples.push(items)
+				if(samples.length === newItem.length){
+					res.send(200, samples);
+				}
+			});}
+		}
+		getSampleId();
 	});
 };
 
