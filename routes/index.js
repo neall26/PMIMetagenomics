@@ -7,8 +7,9 @@ mongoose.connect('mongodb://localhost/test');
 var speciesCharacteristics  = require('../models/speciesCharacteristics.js');
 var sampleMetadata = require('../models/sampleMetadata.js');
 var studyMetadata = require('../models/studyMetadata.js');
+var speciesData = require('../models/speciesCharacteristics.js');
 var request = require('request');
-
+var async = require('async');
 
 
 
@@ -106,6 +107,55 @@ exports.weather = function(req, res) {
 			console.dir(JSON.parse(weather).history.dailysummary[0]);
 			res.send(200, JSON.parse(weather).history.dailysummary[0]);
 		}
+	});
+};
+
+
+exports.speciesData = function(req, res) {
+	var keyword = req.params.id;
+	var samples = [];
+	speciesData.find({lineage: {$regex: keyword, $options: 'i'}}, {sampleId: 1, _id:0},  function(err, item){
+		Array.prototype.contains = function(v) {
+			for(var i = 0; i < this.length; i++) {
+				if(this[i] === v) {
+					return true;
+				}
+			}
+			return false;
+		};
+
+		Array.prototype.unique = function() {
+			var arr = [];
+			for(var i = 0; i < this.length; i++) {
+				if(!arr.contains(this[i])) {
+					arr.push(this[i]);
+				}
+			}
+			return arr; 
+		}
+		var getSampleId = function(){
+		var Item = [];
+		for(var n=0; n<item.length; n++){
+			Item[n]= item[n].sampleId.toString();
+		}
+		var newItem = Item.unique();
+		if(newItem){
+			getSamples(newItem);
+		}
+		}
+		var getSamples = function(newItem){
+			if(newItem.length === 0){
+				res.send(200, false);
+			}
+		for(var n=0; n<newItem.length; n++){
+			sampleMetadata.find({_id: newItem[n]}, function(err, items){
+				samples.push(items)
+				if(samples.length === newItem.length){
+					res.send(200, samples);
+				}
+			});}
+		}
+		getSampleId();
 	});
 };
 

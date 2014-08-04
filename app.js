@@ -32,6 +32,7 @@ app.get('/map', routes.map);
 app.get('/map/data/:id', routes.mapData);
 app.get('/sample/data/:id', routes.sampleData);
 app.get('/study/data', routes.studyData);
+app.get('/species/data:id', routes.speciesData);
 app.get('/forecast/:latitude/:longitude/:samplingDate' , routes.weather);
 app.get('/weather', routes.forecast);
 app.get('/uploader', routes.uploadRender);

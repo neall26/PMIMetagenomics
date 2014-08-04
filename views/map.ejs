@@ -25,6 +25,12 @@
 				</div>
 					<div id= "metadata" style = "padding-top:10px;width:200px;height:200px;">
 			</td><td valign="top">
+				<div id = "search">
+					<form id="searchbox" action="javascript:searchSample();">
+						<input name="text" type="search" >
+						<input type="submit">
+					</form>
+				</div>
 				<div id="map" style="width:1000px;height:600px;"></div>
 				<div id= "data" align="center" style = "width:1000px;"></div>
 			</td></tr></table>
@@ -32,8 +38,6 @@
 	</body>
 
 	<script type="text/javascript">
-
-
 		var map = new google.maps.Map(document.getElementById('map'), {
 			zoom: 10,
 			center: new google.maps.LatLng(36, -84.2),
@@ -48,8 +52,7 @@
 				}
 			}
 		);
-		
-		
+
 		$(function() {
 			getPoints = function(id){
 					document.getElementById("data").innerHTML = "";
@@ -109,6 +112,77 @@
 		}
 	});
 }});
+
+	$(function(){
+			searchSample = function(){
+				var keyword = ".*" + document.forms[0].elements[0].value+ ".*";
+				var empty = false; 
+				document.getElementById("data").innerHTML = "";
+				document.getElementById("metadata").innerHTML = "";
+				var table ='<table id=studySample><thead><tr><th></th></tr></thead><tbody>';
+				var map = new google.maps.Map(document.getElementById('map'), {
+					zoom: 10,
+					mapTypeId: google.maps.MapTypeId.TERRAIN
+				});
+				$.get("/species/data"+keyword, function(data){
+					if(!data){
+						alert("The search returned an empty set \n Make sure the item searched is correct.");
+						map.setCenter(new google.maps.LatLng(36, -84.2));
+						document.getElementById("sampleScroll").innerHTML = "";
+						empty = true;
+					}
+					else{
+						gmarkers= [];
+						var marker, i;
+						for (i = 0; i < data.length; i++) { 
+							if (i == 0){
+								map.setCenter(new google.maps.LatLng(data[i][0].latitude, data[i][0].longitude));
+							}
+							table = table + '<tr><td><a href = "javascript:google.maps.event.trigger(gmarkers[\''+data[i][0].sampleId+'\'], \'click\')">'+data[i][0].sampleId+'</a></td></tr>';
+						}
+						table = table + '</tbody></table>';
+						document.getElementById("sampleScroll").innerHTML = table;
+						$('#studySample').dataTable({
+							/*"aaData": orgContent,*/
+							"bLengthChange": false
+							});
+						var infowindow = new google.maps.InfoWindow();
+						for(var n=0; n< data.length; n++){
+							gmarkers[data[n][0].sampleId] = createMarker( new google.maps.LatLng(data[n][0].latitude, data[n][0].longitude), 
+								'<b> ID:  </b>' + data[n][0].sampleId + '</br>'
+								+ '<b> Name: </b> ' + data[n][0].sampleName + '</br>' 
+								+ '<b> Sampling Date: </b> ' + data[n][0].samplingDate + '</br>' 
+								+ '<b> Domain: </b> ' + data[n][0].domain + '</br>' 
+								+ '<b> Analysis Type: </b> ' + data[n][0].analysisType + '</br>' 
+								+ '<b> Ecosystem Subtype: </b> ' + data[n][0].ecosystemSubtype + '</br>' 
+								+ '<b> Host Name: </b> ' + data[n][0].hostName + '</br>' 
+								+ '<b> Host Tissue: </b> ' + data[n][0].hostTissue + '</br>' 
+								+ '<b> Taxonomy ID: </b> ' + data[n][0].taxonId + '</br>' 
+								+ '<a href="javascript:void(0);" onclick="showDetails(\''+data[n][0]._id +'\');">Details</a>', infowindow, data[n])
+						
+						}
+					}
+				});
+				$(function(){
+						if(!empty){
+						createMarker = function(latlng, html, infowindow, data) {
+						var marker = new google.maps.Marker({
+position: latlng,
+map: map,
+title: data.sampleId
+});
+						google.maps.event.addListener(marker, 'click', function() {
+							infowindow.setContent(html);
+							infowindow.open(map, marker);
+
+							document.getElementById("data").innerHTML = "";
+							document.getElementById("metadata").innerHTML = "";
+							});
+						return marker;
+						}
+						}
+						});
+}});
 	</script>
 	<script>
 		$(function() {
@@ -133,16 +207,25 @@
 						function(weather) {
 							document.getElementById("data").innerHTML =
 				 			"<h5>" + data[0].sampleName +"</h5><br/>"
-							+ getValidValue('Temperature', weather.meantempi, '&#176F')
-							+ getValidValue('Pressure', weather.meanpressurem/1013.25 , 'atm')
-							+ getValidValue('Wind Speed', weather.meanwindspdi, 'mph')
-							+ getValidValue('Dew Point', weather.meandewpti, '&#176F')
-							+ getValidValue('Precipitation', weather.precipi, 'in');
-								//+ getValidValue('Percent Chance Rain', weather.currently.precipProbability, '%') 
-								//+ getValidValue('Temperature', weather.currently.temperature, '&#176F')
-								//+ getValidValue('Humidity', weather.currently.humidity*100, '%') 
-								//+ getValidValue('Wind Speed', weather.currently.windSpeed, 'm/s') 
-								//+ getValidValue('Pressure', weather.currently.pressure, 'hectopascals (hPa)');
+							+ getValidValue('Average Temperature', weather.meantempi, '&#176F')
+							+ getValidValue('Maximum Temperature', weather.maxtempi, '&#176F')
+							+ getValidValue('Minimum Temperature', weather.mintempi, '&#176F')
+							+ getValidValue('Average Pressure', weather.meanpressurem/1013.25 , 'atm')
+							+ getValidValue('Maximum Pressure', weather.maxpressurem/1013.25 , 'atm')
+							+ getValidValue('Minimum Pressure', weather.minpressurem/1013.25 , 'atm')
+							+ getValidValue('Average Wind Speed', weather.meanwindspdi, 'mph')
+							+ getValidValue('Maximum Wind Speed', weather.maxwspdi, 'mph')
+							+ getValidValue('Minimum Wind Speed', weather.minwspdi, 'mph')
+							+ getValidValue('Average Dew Point', weather.meandewpti, '&#176F')
+							+ getValidValue('Maximum Dew Point', weather.maxdewpti, '&#176F')
+							+ getValidValue('Minimum Dew Point', weather.mindewpti, '&#176F')
+							+ getValidValue('Average Vision', weather.meanvisi, 'mi') 
+							+ getValidValue('Maximum Vision', weather.maxvisi, 'mi') 
+							+ getValidValue('Minimum Vision', weather.minvisi, 'mi') 
+							+ getValidValue('Precipitation', weather.precipi, 'in')
+							+ getValidValue('Average Humidity', weather.humidity, '&#37')
+							+ getValidValue('Maximum Humidity', weather.maxhumidity, '&#37')
+							+ getValidValue('Minimum Humidity', weather.minhumidity, '&#37')
 						}	
 					)
 				})};
