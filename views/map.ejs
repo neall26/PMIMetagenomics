@@ -114,6 +114,7 @@
 	$(function(){
 			searchSample = function(){
 				var keyword = ".*" + document.forms[0].elements[0].value+ ".*";
+				var empty = false; 
 				document.getElementById("data").innerHTML = "";
 				var table ='<table id=studySample><thead><tr><th></th></tr></thead><tbody>';
 				var map = new google.maps.Map(document.getElementById('map'), {
@@ -121,23 +122,30 @@
 					mapTypeId: google.maps.MapTypeId.TERRAIN
 				});
 				$.get("/species/data"+keyword, function(data){
-				gmarkers= [];
-				var marker, i;
-				for (i = 0; i < data.length; i++) { 
-					if (i == 0){
-						map.setCenter(new google.maps.LatLng(data[i][0].latitude, data[i][0].longitude));
-						}
-						table = table + '<tr><td><a href = "javascript:google.maps.event.trigger(gmarkers[\''+data[i][0].sampleId+'\'], \'click\')">'+data[i][0].sampleId+'</a></td></tr>';
+					if(!data){
+						alert("The search returned an empty set \n Make sure the item searched is correct.");
+						map.setCenter(new google.maps.LatLng(36, -84.2));
+						document.getElementById("sampleScroll").innerHTML = "";
+						empty = true;
 					}
-				table = table + '</tbody></table>';
-		document.getElementById("sampleScroll").innerHTML = table;
-		$('#studySample').dataTable({
-			/*"aaData": orgContent,*/
-			"bLengthChange": false
-		});
-		var infowindow = new google.maps.InfoWindow();
-					for(var n=0; n< data.length; n++){
-						gmarkers[data[n][0].sampleId] = createMarker( new google.maps.LatLng(data[n][0].latitude, data[n][0].longitude), 
+					else{
+						gmarkers= [];
+						var marker, i;
+						for (i = 0; i < data.length; i++) { 
+							if (i == 0){
+								map.setCenter(new google.maps.LatLng(data[i][0].latitude, data[i][0].longitude));
+							}
+							table = table + '<tr><td><a href = "javascript:google.maps.event.trigger(gmarkers[\''+data[i][0].sampleId+'\'], \'click\')">'+data[i][0].sampleId+'</a></td></tr>';
+						}
+						table = table + '</tbody></table>';
+						document.getElementById("sampleScroll").innerHTML = table;
+						$('#studySample').dataTable({
+							/*"aaData": orgContent,*/
+							"bLengthChange": false
+							});
+						var infowindow = new google.maps.InfoWindow();
+						for(var n=0; n< data.length; n++){
+							gmarkers[data[n][0].sampleId] = createMarker( new google.maps.LatLng(data[n][0].latitude, data[n][0].longitude), 
 								'<b> ID:  </b>' + data[n][0].sampleId + '</br>'
 								+ '<b> Name: </b> ' + data[n][0].sampleName + '</br>' 
 								+ '<b> Sampling Date: </b> ' + data[n][0].samplingDate + '</br>' 
@@ -148,25 +156,28 @@
 								+ '<b> Host Tissue: </b> ' + data[n][0].hostTissue + '</br>' 
 								+ '<b> Taxonomy ID: </b> ' + data[n][0].taxonId + '</br>' 
 								+ '<a href="javascript:void(0);" onclick="showDetails(\''+data[n][0]._id +'\');">Details</a>', infowindow, data[n])
+						
 						}
-			}
-	);
-	$(function(){
-		createMarker = function(latlng, html, infowindow, data) {
-	    var marker = new google.maps.Marker({
-					        position: latlng,
-									        map: map,
-													title: data.sampleId
-													    });
-	google.maps.event.addListener(marker, 'click', function() {
-							        infowindow.setContent(html);
-											        infowindow.open(map, marker);
-			   		
-					document.getElementById("data").innerHTML = "";
-															    });
-					return marker;
-		}
-	});
+					}
+				});
+				$(function(){
+						if(!empty){
+						createMarker = function(latlng, html, infowindow, data) {
+						var marker = new google.maps.Marker({
+position: latlng,
+map: map,
+title: data.sampleId
+});
+						google.maps.event.addListener(marker, 'click', function() {
+							infowindow.setContent(html);
+							infowindow.open(map, marker);
+
+							document.getElementById("data").innerHTML = "";
+							});
+						return marker;
+						}
+						}
+						});
 }});
 	</script>
 	<script>

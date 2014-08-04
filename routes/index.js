@@ -144,6 +144,9 @@ exports.speciesData = function(req, res) {
 		}
 		}
 		var getSamples = function(newItem){
+			if(newItem.length === 0){
+				res.send(200, false);
+			}
 		for(var n=0; n<newItem.length; n++){
 			sampleMetadata.find({_id: newItem[n]}, function(err, items){
 				samples.push(items)
