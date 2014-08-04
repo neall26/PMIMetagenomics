@@ -35,7 +35,7 @@ app.get('/study/data', routes.studyData);
 app.get('/forecast/:latitude/:longitude/:samplingDate' , routes.weather);
 app.get('/weather', routes.forecast);
 app.get('/uploader', routes.uploadRender);
-
+app.post('/fileUpload', routes.fileUpload);
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });

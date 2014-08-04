@@ -112,4 +112,8 @@ exports.weather = function(req, res) {
 exports.uploadRender = function(req, res) {
 	res.render('uploader');
 };
-
+exports.fileUpload = function(req, res) {
+	var spaceType = req.body.selection;
+	var file = req.body.file;
+	console.log(file);
+};
