@@ -6,7 +6,6 @@
 		<% include externalHeader.ejs %>
 
 		<script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<!-- DataTables CSS -->
 		<link rel="stylesheet" type="text/css" href="/css/jquery.dataTables.min.css">
   
@@ -32,6 +31,7 @@
 						<h3>List of Studies</h3>
 						<ul id='list'></ul>	
 					</div>
+					<div id="sampleTitle"></div>
 					<div id="sampleScroll" style = "width:200px;height:300px;overflow-y:scroll;">
 					</div>
 						<div id= "metadata" style = "padding-top:10px;width:200px;height:200px;">
@@ -47,7 +47,7 @@
 					</div>
 					</center>
 					<div id="map" style="width:1000px;height:600px;border:1px solid #666;"></div>
-					<div id= "data" align="center" style = "width:1000px;"></div>
+					<div id="data" align="center" style="width:1000px;"></div>
 				</td></tr></table>
 			</div>
 
@@ -57,8 +57,6 @@
 			<% include externalFooter.ejs %>
 		</div> <!-- /container -->
 
-
-		<% include externalFooter2.ejs %>
 
 		</body>
 
@@ -72,7 +70,7 @@
 		$.get( "/study/data",
 			function( studies ) {
 				for(var i = 0; i< studies.length; i++) {
-					var studyIdWOU = studies[i].studyId.replace(/_/g,' ');
+					var studyIdWOU = studies[i].studyName.replace(/_/g,' ');
 				$('#list').append('<li>' +  '<a href="javascript:void(0);" onclick="getPoints(\''+studies[i]._id +'\');">' + studyIdWOU + '</a>' + '</li>');
 				}
 			}
@@ -98,7 +96,8 @@
 						table = table + '<tr><td><a href = "javascript:google.maps.event.trigger(gmarkers[\''+data[i].sampleId+'\'], \'click\')">'+data[i].sampleId+'</a></td></tr>';
 					}
 				table = table + '</tbody></table>';
-		document.getElementById("sampleScroll").innerHTML = table;
+				document.getElementById("sampleTitle").innerHTML ='<h3>List of Samples</h3>'
+				document.getElementById("sampleScroll").innerHTML =table;
 		$('#studySample').dataTable({
 			/*"aaData": orgContent,*/
 			"bLengthChange": false
@@ -166,7 +165,8 @@
 							table = table + '<tr><td><a href = "javascript:google.maps.event.trigger(gmarkers[\''+data[i][0].sampleId+'\'], \'click\')">'+data[i][0].sampleId+'</a></td></tr>';
 						}
 						table = table + '</tbody></table>';
-						document.getElementById("sampleScroll").innerHTML = table;
+						document.getElementById("sampleTitle").innerHTML ='<h3>List of Samples</h3>'
+						document.getElementById("sampleScroll").innerHTML =table;
 						$('#studySample').dataTable({
 							/*"aaData": orgContent,*/
 							"bLengthChange": false
@@ -189,31 +189,32 @@
 					}
 				});
 				$(function(){
-						if(!empty){
+					if(!empty){
 						createMarker = function(latlng, html, infowindow, data) {
-						var marker = new google.maps.Marker({
-position: latlng,
-map: map,
-title: data.sampleId
-});
-						google.maps.event.addListener(marker, 'click', function() {
-							infowindow.setContent(html);
-							infowindow.open(map, marker);
-
-							document.getElementById("data").innerHTML = "";
-							document.getElementById("metadata").innerHTML = "";
+							var marker = new google.maps.Marker({
+								position: latlng,
+								map: map,
+								title: data.sampleId
 							});
-						return marker;
+							google.maps.event.addListener(marker, 'click', function() {
+								infowindow.setContent(html);
+								infowindow.open(map, marker);
+
+								document.getElementById("data").innerHTML = "";
+								document.getElementById("metadata").innerHTML = "";
+							});
+							return marker;
+							}
 						}
-						}
-						});
+					});
 }});
 	</script>
 	<script>
 		$(function() {
 		  showDetails = function(data) { 
 			document.getElementById("metadata").innerHTML = 
-			'<a href="javascript:void(0);" onclick="getForecast(\''+ data +'\');">Get Weather Data</a>' + '</br>'
+			'<h3>Available Data</h3>'
+			+ '<a href="javascript:void(0);" onclick="getForecast(\''+ data +'\');">Get Weather Data</a>' + '</br>'
 			+ '<a href="javascript:void(0);" onclick="getMetadata(\''+ data +'\');">Get Metadata</a>' + '</br>'
 			+ '<a href="javascript:void(0);" onclick="getSoil(\''+ data +'\');">Get Soil Data</a>' + '</br>'
 				+ '<a href="javascript:void(0);" onclick="getSpecies(\''+ data +'\');">Get Species Details</a>';
@@ -231,7 +232,7 @@ title: data.sampleId
 					$.get("/forecast/" + latitude + "/" + longitude + "/" + samplingDate,
 						function(weather) {
 							document.getElementById("data").innerHTML =
-				 			"<h5>" + data[0].sampleName +"</h5><br/>"
+							"</br><h5>" + data[0].sampleName +"</h5><br/>"
 							+ getValidValue('Average Temperature', weather.meantempi, '&#176F')
 							+ getValidValue('Maximum Temperature', weather.maxtempi, '&#176F')
 							+ getValidValue('Minimum Temperature', weather.mintempi, '&#176F')
@@ -273,28 +274,28 @@ title: data.sampleId
 				getMetadata = function(id) {
 					$.get('sample/data/' + id,
 						function(data){
-					document.getElementById("data").innerHTML = 
-				 						 "<h5>" + data[0].sampleName +"</h5><br/>"
-										 + getValidValue("Gold Id", data[0].sampledGenomeSize)
-										 + getValidValue("Legacy Gold ID", data[0].samplelegacyGoldId)
-										 + getValidValue("Genome Size", data[0].sampledGenomeSize)
-										 + getValidValue("Genome Count", data[0].sampledGeneCount)
-										 + getValidValue("Scaffold Count", data[0].sampleScaffoldCount)
-										 + getValidValue("Side ID", data[0].siteId)
-										 + getValidValue("Latitude", data[0].latitude)
-										 + getValidValue("Longitude", data[0].longitude)
-										 + getValidValue("Alitidue", data[0].altitude, 'm')
-										 + getValidValue("DBH", data[0].dbh, 'cm')
-										 + getValidValue("Distance to River", data[0].distanceToRiver, 'm')
-										 + getValidValue("Distance to Populus", data[0].distanceToPopulus, 'm')
-										 + getValidValue("Distance to Roots", data[0].distanceToRoots, 'm')
-										 + getValidValue("Number of Proximal Trees", data[0].proximalTrees)
-										 + getValidValue("Number of Proximal Poplar Trees", data[0].proximalPoplarTrees)
-										 + getValidValue("Canopy Width", data[0].canopyWidth, ' m')
-										 + getValidValue("Basal Area", data[0].basalArea, ' m&#178')
-										 + getValidValue("Basal Area per Hectare Tree", data[0].basalAreaPerHectareTree)
-										 + getValidValue("Basal Area per Hectare Populus", data[0].basalAreaPerHectarePopulus)
-										 + getValidValue("Basal Area Dominace", data[0].basalAreaDominance, '%')
+							document.getElementById("data").innerHTML = 
+							"</br><h5>" + data[0].sampleName +"</h5><br/>"
+							+ getValidValue("Gold Id", data[0].sampledGenomeSize)
+							+ getValidValue("Legacy Gold ID", data[0].samplelegacyGoldId)
+							+ getValidValue("Genome Size", data[0].sampledGenomeSize)
+							+ getValidValue("Genome Count", data[0].sampledGeneCount)
+							+ getValidValue("Scaffold Count", data[0].sampleScaffoldCount)
+							+ getValidValue("Side ID", data[0].siteId)
+							+ getValidValue("Latitude", data[0].latitude)
+							+ getValidValue("Longitude", data[0].longitude)
+							+ getValidValue("Alitidue", data[0].altitude, 'm')
+							+ getValidValue("DBH", data[0].dbh, 'cm')
+							+ getValidValue("Distance to River", data[0].distanceToRiver, 'm')
+							+ getValidValue("Distance to Populus", data[0].distanceToPopulus, 'm')
+							+ getValidValue("Distance to Roots", data[0].distanceToRoots, 'm')
+							+ getValidValue("Number of Proximal Trees", data[0].proximalTrees)
+							+ getValidValue("Number of Proximal Poplar Trees", data[0].proximalPoplarTrees)
+							+ getValidValue("Canopy Width", data[0].canopyWidth, ' m')
+							+ getValidValue("Basal Area", data[0].basalArea, ' m&#178')
+							+ getValidValue("Basal Area per Hectare Tree", data[0].basalAreaPerHectareTree)
+							+ getValidValue("Basal Area per Hectare Populus", data[0].basalAreaPerHectarePopulus)
+							+ getValidValue("Basal Area Dominace", data[0].basalAreaDominance, '%')
 						}
 					)
 				}
@@ -304,7 +305,7 @@ title: data.sampleId
 					$.get('sample/data/' + id,
 					function(data){
 						document.getElementById("data").innerHTML = 
-				 			"<h5>" + data[0].sampleName +"</h5><br/>"
+						"</br><h5>" + data[0].sampleName +"</h5><br/>"
 							+ getValidValue("Soil Moistrue", data[0].soilMoisture, '%')
 							+ getValidValue("LBC 1 ppm CaCo3pH", data[0].caco3)
 							+ getValidValue("ph CaCl3", data[0].cacl2)
@@ -359,7 +360,7 @@ title: data.sampleId
 						+ '<td>' + species[i].abundance + '</td></tr>';
 						}
 						table = table + '</tbody></table>';
-						document.getElementById("data").innerHTML = table;
+						document.getElementById("data").innerHTML ='</br>' +  table;
 						$('#details').dataTable();	
 					});
 			}

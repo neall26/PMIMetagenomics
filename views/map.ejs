@@ -3,8 +3,8 @@
 	<head> 
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
 		<title>Google Maps Multiple Markers</title> 
+		<style background: "E9E9E9"></style>
 		<script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<!-- DataTables CSS -->
 		<link rel="stylesheet" type="text/css" href="/css/jquery.dataTables.min.css">
   
@@ -47,7 +47,7 @@
 		$.get( "/study/data",
 			function( studies ) {
 				for(var i = 0; i< studies.length; i++) {
-					var studyIdWOU = studies[i].studyId.replace(/_/g,' ');
+					var studyIdWOU = studies[i].studyName.replace(/_/g,' ');
 				$('#list').append('<li>' +  '<a href="javascript:void(0);" onclick="getPoints(\''+studies[i]._id +'\');">' + studyIdWOU + '</a>' + '</li>');
 				}
 			}
