@@ -1,35 +1,168 @@
-<html>
-<body>
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+
+		<% include externalHeader.ejs %>
+		<style>
+			.btn-group-wrap {
+				text-align: center;
+			}
+
+			div.btn-group {
+				margin: 0 auto; 
+				text-align: center;
+				width: inherit;
+				display: inline-block;
+			}
+
+			a {
+				float: left;   
+			}
+		</style>
+
+	</head>
+
+	<body>
+
+		<%- include externalNavigation.ejs %>
 
 
-<ul class="tabs" data-tab>
-  <li class="tab-title active"><a href="#panel2-1">Tab 1</a></li>
-	  <li class="tab-title"><a href="#panel2-2">Tab 2</a></li>
-		  <li class="tab-title"><a href="#panel2-3">Tab 3</a></li>
-			  <li class="tab-title"><a href="#panel2-4">Tab 4</a></li>
-			</ul>
-			<div class="tabs-content">
-				  <div class="content active" id="panel2-1">
-						    <p>First panel content goes here...</p>
-								  </div>
-									  <div class="content" id="panel2-2">
-											    <p>Second panel content goes here...</p>
-													  </div>
-														  <div class="content" id="panel2-3">
-																    <p>Third panel content goes here...</p>
-																		  </div>
-																			  <div class="content" id="panel2-4">
-																					    <p>Fourth panel content goes here...</p>
-																							  </div>
-																							</div>
+
+		<div class="container">
+
+			<!--  Carousel -->
+			<!--  consult Bootstrap docs at 
+			http://twitter.github.com/bootstrap/javascript.html#carousel -->
+			<div id="this-carousel-id" class="carousel slide">
+				<div class="carousel-inner">
+					<div class="item active">
+						<a href="/fieldTrips">  <img src="img/car1_2.jpg" alt="PMI Oregon Sampling Trip" />
+						</a>
+						<div class="carousel-caption">
+							<p>PMI collective effort of native Populus root sampling in Clatskanie.</p>
+							<p><a href="/fieldTrips">Trip Details &raquo;</a></p>
+						</div>
+					</div>
+					<div class="item">
+						<a href="/fieldTrips">
+							<img src="img/car2_2.jpg" alt="Root Chanels" />
+						</a>
+						<div class="carousel-caption">
+							<p>Gleyed clay layer with root chanels.</p>
+
+						</div>
+					</div>
+					<div class="item">
+						<a href="/fieldTrips">
+							<img src="img/car3_2.jpg" alt="Populus plantation in Clatskanie" />
+						</a>
+						<div class="carousel-caption">
+							<p>General view of a Populus plantation in Clatskanie.</p>
+
+						</div>
+					</div>
+					<div class="item">
+						<a href="#">
+							<img src="img/car7_2.jpg" alt="Pseudomonas isolate GM30" />
+						</a>
+						<div class="carousel-caption">
+							<p>Pseudomonas isolate GM30 (green) is detected on the surface of a poplar root (red) using fluorescence in situ hybridization (FISH).</p>
+
+						</div>
+					</div>
+					<div class="item">
+						<a href="/fieldTrips">
+							<img src="img/car5_2.jpg" alt="Digging for Populus Roots" />
+						</a>
+						<div class="carousel-caption">
+							<p>Jessy Labbe and Greg Bonito digging for Populus roots.</p>
+
+						</div>
+					</div>
+					<div class="item">
+						<a href="#">
+							<img src="img/car6_2.jpg" alt="Pseudomonas isolate GM17" />
+						</a>
+						<div class="carousel-caption">
+							<p>Pseudomonas isolate GM17 attaches to the surface of a poplar root.</p>
+
+						</div>
+					</div>
+				</div><!-- .carousel-inner -->
+				<!--  next and previous controls here
+				href values must reference the id for this carousel -->
+				<a class="carousel-control left" href="#this-carousel-id" data-slide="prev">&lsaquo;</a>
+				<a class="carousel-control right" href="#this-carousel-id" data-slide="next">&rsaquo;</a>
+			</div><!-- .carousel -->
+			<!-- end carousel -->
+
+			<!-- Example row of columns -->
+
+			<div class="row">
+				<div class="span9" style='width:1170px;'>
+					<h2>Plant-Microbe Interfaces Scientific Focus Area</h2>
+					<p>The Plant-Microbe Interfaces (PMI) project is a Scientific Focus Area directed towards understanding the dynamic interface that exists between plants, microbes and their environment. A specific focus is on defining the genetic bases of molecular communication between <i>Populus</i> and its microbial consortia. Understanding the inherent chemical and physical processes involved will facilitate natural routes to the cycling and sequestration of carbon in terrestrial environments, ecosystem response to climate change, and the development and management of renewable energy sources.
+
+					</p><p>The project integrates expertise in the areas of plant genomics, fungal and bacterial research, fungal ecology, analytical tool development and computational biology and is based at the Oak Ridge National Laboratory, with collaborators at the University of Washington, Duke University, and INRA - Nancy (France). The project is a Foundational Genomics Scientific Focus Area supported by the Genomic Science Program of the Office of Biological and Environmental Research of the U.S. Department of Energy.</p>
+
+				</div>
+
+			</div>
+
+			<div class="pull-center">
+					<div style='text-align:center; width:100%;margin-left:auto; margin-right:auto;'>
+						<div class='pull-center' style='padding-top:30px;margin-bottom:20px;'>
+							<div class="btn-group">
+								<a href='/news' class="btn  btn-success btn-large"> Latest PMI News</a>
+								<a href='/fieldTrips' class="btn  btn-success btn-large"> PMI Field Trips</a>
+								<a href='/pubs' class="btn  btn-success btn-large"> PMI Publications</a>
+								<a href='/team' class="btn  btn-success btn-large"> PMI Team</a>
+							</div>
+						</div>
+					</div>
+			</div>
+
+			<!--
+			<div class="row">
+				<div class="span4" style='width:530px;'>
+					<h2>Latest News</h2>          
+					<ul>
+						<li>Francis Martin's lab (our collaborator at INRA, Nancy, France) received the Lab of Excellence award</li>
+
+					</ul>
+					<p><a class="btn btn-primary" href="news.jsp">View details &raquo;</a></p>
+				</div>
+				<div class="span4"  style='width:530px;'>
+					<h2>Latest Field Trip - Oregon</h2>
+					<p>
+					<div class='row' style='padding-left:20px;'>
+						<img src='img/Fungi_Clatskanie_2.jpg' />
+						<img src='img/Clump%20of%20native%20Populus%20trees%20along%20Columbia%20river.jpg' />
+						<img src='img/Interesting%20root%20types_2_Clatskanie.jpg' />
+						<img src='img/View%20of%20a%20different%20%20plantation_Clatskanie.jpg' />
+					</div>
+					</p>
+					<p><a class="btn btn-primary" href="extphotos.jsp">View details &raquo;</a></p>
+				</div>
+			</div>      
+			-->
 
 
+			<% include externalFooter.ejs %>
+
+		</div> <!-- /container -->
 
 
-</body>
-<script>
-  //$('#myTabs').on('toggled', function (event, tab) {
-		//	    console.log(tab);
-			//		  });
-</script>
-</html>
+		<% include externalFooter2.ejs %>
+			<script>
+				$(document).ready(function(){
+					$('.carousel').carousel({
+						interval: 4000
+					});
+				});
+			</script>
+
+		</body>
+	</html>
+

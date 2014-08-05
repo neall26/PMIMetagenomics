@@ -1,0 +1,371 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+
+		<% include externalHeader.ejs %>
+
+		<script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<!-- DataTables CSS -->
+		<link rel="stylesheet" type="text/css" href="/css/jquery.dataTables.min.css">
+  
+		<!-- jQuery -->
+		<script type="text/javascript" charset="utf8" src="/js/jquery.js"></script>
+  
+		<!-- DataTables -->
+		<script type="text/javascript" charset="utf8" src="/js/jquery.dataTables.min.js"></script>
+
+	</head>
+
+	<body>
+
+		<%- include externalNavigation.ejs %>
+	
+
+		<div class="container">
+
+
+			<div>
+				<table><tr><td valign="top">
+					<div id="list" style="width: 200px; height: 150px">
+						<h3>List of Studies</h3>
+						<ul id='list'></ul>	
+					</div>
+					<div id="sampleScroll" style = "width:200px;height:300px;overflow-y:scroll;">
+					</div>
+						<div id= "metadata" style = "padding-top:10px;width:200px;height:200px;">
+				</td><td valign="top">
+					<center>
+
+
+					<div id = "search">
+						<form id="searchbox" class='form-inline' action="javascript:searchSample();">
+							<input type="search" name='text' placeholder="Search Samples" style='width:500px;'>
+							<input type="submit">
+						</form>
+					</div>
+					</center>
+					<div id="map" style="width:1000px;height:600px;border:1px solid #666;"></div>
+					<div id= "data" align="center" style = "width:1000px;"></div>
+				</td></tr></table>
+			</div>
+
+
+
+
+			<% include externalFooter.ejs %>
+		</div> <!-- /container -->
+
+
+		<% include externalFooter2.ejs %>
+
+		</body>
+
+	<script type="text/javascript">
+		var map = new google.maps.Map(document.getElementById('map'), {
+			zoom: 10,
+			center: new google.maps.LatLng(36, -84.2),
+			mapTypeId: google.maps.MapTypeId.TERRAIN
+		});
+	
+		$.get( "/study/data",
+			function( studies ) {
+				for(var i = 0; i< studies.length; i++) {
+					var studyIdWOU = studies[i].studyId.replace(/_/g,' ');
+				$('#list').append('<li>' +  '<a href="javascript:void(0);" onclick="getPoints(\''+studies[i]._id +'\');">' + studyIdWOU + '</a>' + '</li>');
+				}
+			}
+		);
+
+		$(function() {
+			getPoints = function(id){
+					document.getElementById("data").innerHTML = "";
+					document.getElementById("metadata").innerHTML = "";
+				var table ='<table id=studySample><thead><tr><th></th></tr></thead><tbody>';
+				var map = new google.maps.Map(document.getElementById('map'), {
+					zoom: 10,
+					mapTypeId: google.maps.MapTypeId.TERRAIN
+				});
+
+			$.get( "/map/data/"+id, function( data ) {
+				gmarkers= [];
+				var marker, i;
+				for (i = 0; i < data.length; i++) { 
+					if (i == 0){
+						map.setCenter(new google.maps.LatLng(data[i].latitude, data[i].longitude));
+						}
+						table = table + '<tr><td><a href = "javascript:google.maps.event.trigger(gmarkers[\''+data[i].sampleId+'\'], \'click\')">'+data[i].sampleId+'</a></td></tr>';
+					}
+				table = table + '</tbody></table>';
+		document.getElementById("sampleScroll").innerHTML = table;
+		$('#studySample').dataTable({
+			/*"aaData": orgContent,*/
+			"bLengthChange": false
+		});
+		var infowindow = new google.maps.InfoWindow();
+					for(var n=0; n< data.length; n++){
+						gmarkers[data[n].sampleId] = createMarker( new google.maps.LatLng(data[n].latitude, data[n].longitude), 
+								'<b> ID:  </b>' + data[n].sampleId + '</br>'
+								+ '<b> Name: </b> ' + data[n].sampleName + '</br>' 
+								+ '<b> Sampling Date: </b> ' + data[n].samplingDate + '</br>' 
+								+ '<b> Domain: </b> ' + data[n].domain + '</br>' 
+								+ '<b> Analysis Type: </b> ' + data[n].analysisType + '</br>' 
+								+ '<b> Ecosystem Subtype: </b> ' + data[n].ecosystemSubtype + '</br>' 
+								+ '<b> Host Name: </b> ' + data[n].hostName + '</br>' 
+								+ '<b> Host Tissue: </b> ' + data[n].hostTissue + '</br>' 
+								+ '<b> Taxonomy ID: </b> ' + data[n].taxonId + '</br>' 
+								+ '<a href="javascript:void(0);" onclick="showDetails(\''+data[n]._id +'\');">Details</a>', infowindow, data[n])
+						}
+			}
+	);
+	$(function(){
+		createMarker = function(latlng, html, infowindow, data) {
+	    var marker = new google.maps.Marker({
+					        position: latlng,
+									        map: map,
+													title: data.sampleId
+													    });
+	google.maps.event.addListener(marker, 'click', function() {
+							        infowindow.setContent(html);
+											        infowindow.open(map, marker);
+			   		
+					document.getElementById("data").innerHTML = "";
+					document.getElementById("metadata").innerHTML = "";
+															    });
+					return marker;
+		}
+	});
+}});
+
+	$(function(){
+			searchSample = function(){
+				var keyword = ".*" + document.forms[0].elements[0].value+ ".*";
+				var empty = false; 
+				document.getElementById("data").innerHTML = "";
+				document.getElementById("metadata").innerHTML = "";
+				var table ='<table id=studySample><thead><tr><th></th></tr></thead><tbody>';
+				var map = new google.maps.Map(document.getElementById('map'), {
+					zoom: 10,
+					mapTypeId: google.maps.MapTypeId.TERRAIN
+				});
+				$.get("/species/data"+keyword, function(data){
+					if(!data){
+						alert("The search returned an empty set \n Make sure the item searched is correct.");
+						map.setCenter(new google.maps.LatLng(36, -84.2));
+						document.getElementById("sampleScroll").innerHTML = "";
+						empty = true;
+					}
+					else{
+						gmarkers= [];
+						var marker, i;
+						for (i = 0; i < data.length; i++) { 
+							if (i == 0){
+								map.setCenter(new google.maps.LatLng(data[i][0].latitude, data[i][0].longitude));
+							}
+							table = table + '<tr><td><a href = "javascript:google.maps.event.trigger(gmarkers[\''+data[i][0].sampleId+'\'], \'click\')">'+data[i][0].sampleId+'</a></td></tr>';
+						}
+						table = table + '</tbody></table>';
+						document.getElementById("sampleScroll").innerHTML = table;
+						$('#studySample').dataTable({
+							/*"aaData": orgContent,*/
+							"bLengthChange": false
+							});
+						var infowindow = new google.maps.InfoWindow();
+						for(var n=0; n< data.length; n++){
+							gmarkers[data[n][0].sampleId] = createMarker( new google.maps.LatLng(data[n][0].latitude, data[n][0].longitude), 
+								'<b> ID:  </b>' + data[n][0].sampleId + '</br>'
+								+ '<b> Name: </b> ' + data[n][0].sampleName + '</br>' 
+								+ '<b> Sampling Date: </b> ' + data[n][0].samplingDate + '</br>' 
+								+ '<b> Domain: </b> ' + data[n][0].domain + '</br>' 
+								+ '<b> Analysis Type: </b> ' + data[n][0].analysisType + '</br>' 
+								+ '<b> Ecosystem Subtype: </b> ' + data[n][0].ecosystemSubtype + '</br>' 
+								+ '<b> Host Name: </b> ' + data[n][0].hostName + '</br>' 
+								+ '<b> Host Tissue: </b> ' + data[n][0].hostTissue + '</br>' 
+								+ '<b> Taxonomy ID: </b> ' + data[n][0].taxonId + '</br>' 
+								+ '<a href="javascript:void(0);" onclick="showDetails(\''+data[n][0]._id +'\');">Details</a>', infowindow, data[n])
+						
+						}
+					}
+				});
+				$(function(){
+						if(!empty){
+						createMarker = function(latlng, html, infowindow, data) {
+						var marker = new google.maps.Marker({
+position: latlng,
+map: map,
+title: data.sampleId
+});
+						google.maps.event.addListener(marker, 'click', function() {
+							infowindow.setContent(html);
+							infowindow.open(map, marker);
+
+							document.getElementById("data").innerHTML = "";
+							document.getElementById("metadata").innerHTML = "";
+							});
+						return marker;
+						}
+						}
+						});
+}});
+	</script>
+	<script>
+		$(function() {
+		  showDetails = function(data) { 
+			document.getElementById("metadata").innerHTML = 
+			'<a href="javascript:void(0);" onclick="getForecast(\''+ data +'\');">Get Weather Data</a>' + '</br>'
+			+ '<a href="javascript:void(0);" onclick="getMetadata(\''+ data +'\');">Get Metadata</a>' + '</br>'
+			+ '<a href="javascript:void(0);" onclick="getSoil(\''+ data +'\');">Get Soil Data</a>' + '</br>'
+				+ '<a href="javascript:void(0);" onclick="getSpecies(\''+ data +'\');">Get Species Details</a>';
+				
+			};
+		});
+		$(function() {
+		  getForecast = function(id) {
+				$.get('sample/data/' + id, function(data){
+				var latitude =data[0].latitude; 
+				var longitude = data[0].longitude;
+				var samplingDate = data[0].samplingDate; 
+ 
+
+					$.get("/forecast/" + latitude + "/" + longitude + "/" + samplingDate,
+						function(weather) {
+							document.getElementById("data").innerHTML =
+				 			"<h5>" + data[0].sampleName +"</h5><br/>"
+							+ getValidValue('Average Temperature', weather.meantempi, '&#176F')
+							+ getValidValue('Maximum Temperature', weather.maxtempi, '&#176F')
+							+ getValidValue('Minimum Temperature', weather.mintempi, '&#176F')
+							+ getValidValue('Average Pressure', weather.meanpressurem/1013.25 , 'atm')
+							+ getValidValue('Maximum Pressure', weather.maxpressurem/1013.25 , 'atm')
+							+ getValidValue('Minimum Pressure', weather.minpressurem/1013.25 , 'atm')
+							+ getValidValue('Average Wind Speed', weather.meanwindspdi, 'mph')
+							+ getValidValue('Maximum Wind Speed', weather.maxwspdi, 'mph')
+							+ getValidValue('Minimum Wind Speed', weather.minwspdi, 'mph')
+							+ getValidValue('Average Dew Point', weather.meandewpti, '&#176F')
+							+ getValidValue('Maximum Dew Point', weather.maxdewpti, '&#176F')
+							+ getValidValue('Minimum Dew Point', weather.mindewpti, '&#176F')
+							+ getValidValue('Average Vision', weather.meanvisi, 'mi') 
+							+ getValidValue('Maximum Vision', weather.maxvisi, 'mi') 
+							+ getValidValue('Minimum Vision', weather.minvisi, 'mi') 
+							+ getValidValue('Precipitation', weather.precipi, 'in')
+							+ getValidValue('Average Humidity', weather.humidity, '&#37')
+							+ getValidValue('Maximum Humidity', weather.maxhumidity, '&#37')
+							+ getValidValue('Minimum Humidity', weather.minhumidity, '&#37')
+							+ "All data pulled from Weather Underground";
+						}	
+					)
+				})};
+		});
+
+		getValidValue = function(label, obj, unit) {
+			if(unit === undefined){
+				unit = '';
+			};
+			if (obj || obj === 0){// != null || obj != undefined) {
+				return '<b>' + label + ': </b> ' + obj+ ' ' + unit+ '</br>'
+			} else {
+				return ""
+			}
+				
+		}
+		
+		$(function() { 
+				getMetadata = function(id) {
+					$.get('sample/data/' + id,
+						function(data){
+					document.getElementById("data").innerHTML = 
+				 						 "<h5>" + data[0].sampleName +"</h5><br/>"
+										 + getValidValue("Gold Id", data[0].sampledGenomeSize)
+										 + getValidValue("Legacy Gold ID", data[0].samplelegacyGoldId)
+										 + getValidValue("Genome Size", data[0].sampledGenomeSize)
+										 + getValidValue("Genome Count", data[0].sampledGeneCount)
+										 + getValidValue("Scaffold Count", data[0].sampleScaffoldCount)
+										 + getValidValue("Side ID", data[0].siteId)
+										 + getValidValue("Latitude", data[0].latitude)
+										 + getValidValue("Longitude", data[0].longitude)
+										 + getValidValue("Alitidue", data[0].altitude, 'm')
+										 + getValidValue("DBH", data[0].dbh, 'cm')
+										 + getValidValue("Distance to River", data[0].distanceToRiver, 'm')
+										 + getValidValue("Distance to Populus", data[0].distanceToPopulus, 'm')
+										 + getValidValue("Distance to Roots", data[0].distanceToRoots, 'm')
+										 + getValidValue("Number of Proximal Trees", data[0].proximalTrees)
+										 + getValidValue("Number of Proximal Poplar Trees", data[0].proximalPoplarTrees)
+										 + getValidValue("Canopy Width", data[0].canopyWidth, ' m')
+										 + getValidValue("Basal Area", data[0].basalArea, ' m&#178')
+										 + getValidValue("Basal Area per Hectare Tree", data[0].basalAreaPerHectareTree)
+										 + getValidValue("Basal Area per Hectare Populus", data[0].basalAreaPerHectarePopulus)
+										 + getValidValue("Basal Area Dominace", data[0].basalAreaDominance, '%')
+						}
+					)
+				}
+			});	
+		$(function() {
+				getSoil = function(id) {
+					$.get('sample/data/' + id,
+					function(data){
+						document.getElementById("data").innerHTML = 
+				 			"<h5>" + data[0].sampleName +"</h5><br/>"
+							+ getValidValue("Soil Moistrue", data[0].soilMoisture, '%')
+							+ getValidValue("LBC 1 ppm CaCo3pH", data[0].caco3)
+							+ getValidValue("ph CaCl3", data[0].cacl2)
+							+ getValidValue("Equivalent Water pH", data[0].waterPh)
+							+ getValidValue("Sand", data[0].sand, '%')
+							+ getValidValue("Silt", data[0].silt, '%')
+							+ getValidValue("Clay", data[0].clay, '%')
+							+ getValidValue("Carbon", data[0].carbon, '%')
+							+ getValidValue("Nitrogen", data[0].nitrogen, '%')
+							+ getValidValue("OM", data[0].oM, '%')
+							+ getValidValue("Calcium", data[0].calcium, 'ppm')
+							+ getValidValue("Potassium", data[0].potassium, 'ppm')
+							+ getValidValue("Magnesium", data[0].magnesium, 'ppm')
+							+ getValidValue("Manganese", data[0].manganese, 'ppm')
+							+ getValidValue("Phosphorus", data[0].phosphorus, 'ppm')
+							+ getValidValue("Zinc", data[0].zinc, 'ppm')
+					}
+				)
+			}
+		});
+	
+
+		$(function() {
+			getSpecies = function(id) {
+				$.get("/details/" + id,
+						function(species){
+						var table = "" +
+					'<table id = "details">'
+					+'<thead><tr>'
+					+ '<th> Species ID </th>'
+					+ '<th> Kingdom </th>'
+					+ '<th> Phylum </th>'
+					+ '<th> Class </th>'
+					+ '<th> Order </th>'
+					+ '<th> Family </th>'
+					+ '<th> Genus </th>'
+					+ '<th> Species </th>'
+					+ '<th> Abundance </th>'
+					+ '</tr></thead><tbody>';
+						
+					for(var i=0; i< species.length; i++){
+					
+						table = table + '<tr>'
+						+ '<td>'+ species[i].speciesId + '</td>'
+						+ '<td>' + species[i].kingdom + '</td>'
+						+ '<td>' + species[i].phylum + '</td>'
+						+ '<td>' + species[i].sClass + '</td>'
+						+ '<td>' + species[i].order + '</td>'
+						+ '<td>' + species[i].family + '</td>'
+						+ '<td>' + species[i].genus + '</td>'
+						+ '<td>' + species[i].species + '</td>'
+						+ '<td>' + species[i].abundance + '</td></tr>';
+						}
+						table = table + '</tbody></table>';
+						document.getElementById("data").innerHTML = table;
+						$('#details').dataTable();	
+					});
+			}
+		});
+	</script>
+
+
+	</html>
+

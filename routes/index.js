@@ -26,6 +26,10 @@ exports.details = function(req, res) {
 	});
 };
 
+exports.map2 = function(req, res) {
+	res.render('maps2');
+};
+
 exports.map = function(req, res) {
 	res.render('map');
 };
