@@ -100,7 +100,8 @@
 				document.getElementById("sampleScroll").innerHTML =table;
 		$('#studySample').dataTable({
 			/*"aaData": orgContent,*/
-			"bLengthChange": false
+			"bLengthChange": false,
+			"pagingType": "simple"
 		});
 		var infowindow = new google.maps.InfoWindow();
 					for(var n=0; n< data.length; n++){
