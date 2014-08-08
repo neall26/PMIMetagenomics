@@ -168,6 +168,5 @@ exports.uploadRender = function(req, res) {
 };
 exports.fileUpload = function(req, res) {
 	var spaceType = req.body.selection;
-	var file = req.body.file;
-	console.log(file);
+	console.log(req.body.upload);
 };

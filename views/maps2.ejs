@@ -27,14 +27,14 @@
 
 			<div>
 				<table><tr><td valign="top">
-					<div id="list" style="width: 200px; height: 150px">
+					<div id="list" style="width: 250px; height: 150px">
 						<h3>List of Studies</h3>
 						<ul id='list'></ul>	
 					</div>
 					<div id="sampleTitle"></div>
-					<div id="sampleScroll" style = "width:200px;height:300px;overflow-y:scroll;">
+					<div id="sampleScroll" style = "width:250px;height:300px;overflow-y:scroll;">
 					</div>
-						<div id= "metadata" style = "padding-top:10px;width:200px;height:200px;">
+						<div id= "metadata" style = "padding-top:10px;width:250px;height:200px;">
 				</td><td valign="top">
 					<center>
 
@@ -46,8 +46,8 @@
 						</form>
 					</div>
 					</center>
-					<div id="map" style="width:1000px;height:600px;border:1px solid #666;"></div>
-					<div id="data" align="center" style="width:1000px;"></div>
+					<div id="map" style="width:920px;height:600px;border:1px solid #666;"></div>
+					<div id="data" align="center" style="width:920px;"></div>
 				</td></tr></table>
 			</div>
 
@@ -113,8 +113,7 @@
 								+ '<b> Ecosystem Subtype: </b> ' + data[n].ecosystemSubtype + '</br>' 
 								+ '<b> Host Name: </b> ' + data[n].hostName + '</br>' 
 								+ '<b> Host Tissue: </b> ' + data[n].hostTissue + '</br>' 
-								+ '<b> Taxonomy ID: </b> ' + data[n].taxonId + '</br>' 
-								+ '<a href="javascript:void(0);" onclick="showDetails(\''+data[n]._id +'\');">Details</a>', infowindow, data[n])
+								+ '<b> Taxonomy ID: </b> ' + data[n].taxonId + '</br>', infowindow, data[n])
 						}
 			}
 	);
@@ -130,7 +129,12 @@
 											        infowindow.open(map, marker);
 			   		
 					document.getElementById("data").innerHTML = "";
-					document.getElementById("metadata").innerHTML = "";
+					document.getElementById("metadata").innerHTML = 
+						'<h3>Available Data</h3>'
+						+ '<a href="javascript:void(0);" onclick="getForecast(\''+ data +'\');">Get Weather Data</a>' + '</br>'
+						+ '<a href="javascript:void(0);" onclick="getMetadata(\''+ data +'\');">Get Metadata</a>' + '</br>'
+						+ '<a href="javascript:void(0);" onclick="getSoil(\''+ data +'\');">Get Soil Data</a>' + '</br>'
+						+ '<a href="javascript:void(0);" onclick="getSpecies(\''+ data +'\');">Get Species Details</a>';
 															    });
 					return marker;
 		}
@@ -182,8 +186,7 @@
 								+ '<b> Ecosystem Subtype: </b> ' + data[n][0].ecosystemSubtype + '</br>' 
 								+ '<b> Host Name: </b> ' + data[n][0].hostName + '</br>' 
 								+ '<b> Host Tissue: </b> ' + data[n][0].hostTissue + '</br>' 
-								+ '<b> Taxonomy ID: </b> ' + data[n][0].taxonId + '</br>' 
-								+ '<a href="javascript:void(0);" onclick="showDetails(\''+data[n][0]._id +'\');">Details</a>', infowindow, data[n])
+								+ '<b> Taxonomy ID: </b> ' + data[n][0].taxonId + '</br>', infowindow, data[n])
 						
 						}
 					}
@@ -201,7 +204,12 @@
 								infowindow.open(map, marker);
 
 								document.getElementById("data").innerHTML = "";
-								document.getElementById("metadata").innerHTML = "";
+								document.getElementById("metadata").innerHTML = 
+									'<h3>Available Data</h3>'
+									+ '<a href="javascript:void(0);" onclick="getForecast(\''+ data +'\');">Get Weather Data</a>' + '</br>'
+									+ '<a href="javascript:void(0);" onclick="getMetadata(\''+ data +'\');">Get Metadata</a>' + '</br>'
+									+ '<a href="javascript:void(0);" onclick="getSoil(\''+ data +'\');">Get Soil Data</a>' + '</br>'
+									+ '<a href="javascript:void(0);" onclick="getSpecies(\''+ data +'\');">Get Species Details</a>';
 							});
 							return marker;
 							}
